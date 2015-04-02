@@ -1,2 +1,2 @@
 # pds-util
-Command line utility for searching Planetary Data System (PDS) data.
+Command line utilities for working with Planetary Data System (PDS) data.
