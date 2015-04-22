@@ -68,6 +68,8 @@ def read_image(imagename,labelname=None):
     bits2format = {8:'B',16:'H',32:'I',64:'Q'}
     try:
         bitcode = bits2format[label['IMAGE']['SAMPLE_BITS']]
+        print 'Using bit depth: {b} ({n})'.format(
+                                    b=bitcode,n=label['IMAGE']['SAMPLE_BITS'])
     except:
         print 'Nonsense bit length: {b}'.format(b=label['IMAGE']['SAMPLE_BITS'])
         raise
@@ -75,11 +77,11 @@ def read_image(imagename,labelname=None):
     nbytes = npixels*label['IMAGE']['SAMPLE_BITS']/8
     endian = '>' if 'MSB' in label['IMAGE']['SAMPLE_TYPE'] else '<'
     fmt = '{endian}{pixels}{code}'.format(
-                                    endian='<',pixels=npixels,code=bitcode)
+                                        endian='<',pixels=npixels,code=bitcode)
     with open(imagename,'rb') as f:
         if not labelname:
             f.seek(label['RECORD_BYTES']*(label['^IMAGE']-1))
         unmasked = struct.unpack(fmt,f.read(nbytes))
-        masked = [label['IMAGE']['SAMPLE_BIT_MASK'] & u for u in unmasked]
-        return np.array(masked).reshape(
+        #masked = [label['IMAGE']['SAMPLE_BIT_MASK'] & u for u in unmasked]
+        return np.array(unmasked).reshape(
                     label['IMAGE']['LINES'],label['IMAGE']['LINE_SAMPLES'])
