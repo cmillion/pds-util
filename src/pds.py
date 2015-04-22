@@ -39,6 +39,7 @@ def read_label(labelname):
                     line = f.next()
                     value += line.strip()
                 try:
+                    # THIS IS PROBABLY GOING WRONG
                     value = ast.literal_eval(value)
                 except:
                     if '(' in value[0] and ')' in value[-1]:
