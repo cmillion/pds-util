@@ -81,7 +81,7 @@ def read_image(imagename,labelname=None):
     '''fmt contained the problem. see note below...'''
     fmt = '{endian}{pixels}{code}'.format(
                                         endian=endiann,pixels=npixels,code=bitcode)
-    '''NOTE: The problem of poor image quality were the result of the endian in the
+    '''NOTE: The problem of poor image quality was the result of the endian in the
        format() above being set to a fixed value. Now the endian adapts to the
        endian that is native to the image.'''
 
