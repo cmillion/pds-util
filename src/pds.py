@@ -106,7 +106,7 @@ def read_dat(filename,write_csv=False,quiet=True):
     and .xml label must exist in the same directory.
     """
     if filename[-4:]=='.dat':
-        filename.replace('.dat','.xml')
+        filename = filename.replace('.dat','.xml')
     if filename[-4:]!='.xml':
         raise TypeError('Unknown filetype: {ext}'.format(ext=filename[-4:]))
     structures = pds4_tools.pds4_read(filename,quiet=quiet)
