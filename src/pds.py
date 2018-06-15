@@ -47,6 +47,7 @@ def read_label(labelname):
                 try:
                     # THIS IS PROBABLY GOING WRONG
                     value = ast.literal_eval(value)
+
                 except:
                     if '(' in value[0] and ')' in value[-1]:
                         value = [a.strip() for a in value[1:-1].split(',')]
@@ -83,9 +84,14 @@ def read_image(imagename,labelname=None):
         raise
     npixels = label['IMAGE']['LINES']*label['IMAGE']['LINE_SAMPLES']
     nbytes = npixels*label['IMAGE']['SAMPLE_BITS']/8
-    endian = '>' if 'MSB' in label['IMAGE']['SAMPLE_TYPE'] else '<'
+    endiann = '>' if 'MSB' in label['IMAGE']['SAMPLE_TYPE'] else '<'
+    '''fmt contained the problem. see note below...'''
     fmt = '{endian}{pixels}{code}'.format(
-                                        endian='<',pixels=npixels,code=bitcode)
+                                        endian=endiann,pixels=npixels,code=bitcode)
+    '''NOTE: The problem of poor image quality was the result of the endian in the
+       format() above being set to a fixed value. Now the endian adapts to the
+       endian that is native to the image.'''
+
     with open(imagename,'rb') as f:
         if not labelname:
             f.seek(label['RECORD_BYTES']*(label['^IMAGE']-1))
