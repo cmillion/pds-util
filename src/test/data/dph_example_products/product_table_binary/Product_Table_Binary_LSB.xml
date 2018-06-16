@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1700.sch"
+  schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1"
+    xmlns:pds="http://pds.nasa.gov/pds4/pds/v1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1700.xsd">  
+       
+    <Identification_Area>
+        <logical_identifier>urn:nasa:pds:example.dph.sampleproducts:exampleproducts:tablebin.phx-m-tt-5-wind-vel-dir-lsb-v1.0</logical_identifier>
+        <version_id>1.1</version_id>
+        <title>Example Table_Binary with Phoenix Mars Wind Experiment Data</title>
+        <information_model_version>1.7.0.0</information_model_version>
+        <product_class>Product_Observational</product_class>
+        <Modification_History>
+            <Modification_Detail>
+                <modification_date>2015-09-18</modification_date>
+                <version_id>1.1</version_id>
+                <description>
+                    Converted ASCII table to LSB binary.
+                </description>
+            </Modification_Detail>
+            <Modification_Detail>
+                <modification_date>2012-01-12</modification_date>
+                <version_id>1.0</version_id>
+                <description>
+                    extracted metadata from PDS3 catalog and
+                    modified to comply with PDS4 Information Model
+                </description>
+            </Modification_Detail>
+        </Modification_History>
+    </Identification_Area>
+    
+    <Observation_Area>
+        <comment>
+            Wind speed and direction estimates from images of the Phoenix Telltale sensor.
+        </comment>
+        <Time_Coordinates>
+            <start_date_time>2008-08-26T20:36:36.856Z</start_date_time>
+            <stop_date_time>2008-10-27T15:32:50.952Z</stop_date_time>
+            <local_mean_solar_time>not applicable</local_mean_solar_time>
+            <local_true_solar_time>not applicable</local_true_solar_time>
+        </Time_Coordinates>
+        <Primary_Result_Summary>
+            <purpose>Science</purpose>
+            <processing_level>Derived</processing_level>
+            <description>
+                A table of wind speed and direction at Phoenix site on Mars.             
+            </description>
+        </Primary_Result_Summary>
+        
+        <Investigation_Area>
+            <name>Phoenix</name>
+            <type>Mission</type>
+            <Internal_Reference>
+                <lidvid_reference>urn:nasa:pds:context:investigation:mission.phoenix::1.0</lidvid_reference>
+                <reference_type>data_to_investigation</reference_type>
+            </Internal_Reference>
+        </Investigation_Area>
+        <Observing_System>
+            <name>Observing System for PHX+TT</name>
+            <Observing_System_Component>
+                <name>Phoenix</name>
+                <type>Spacecraft</type>
+                <description>
+                    The Phoenix lander carried the following instruments to the surface
+                    of Mars: a robotic arm and camera, a surface stereo imager, a thermal
+                    and evolved gas analyzer, a Mars descent imager, a surface properties
+                    package, a thermal and electrical conductivity probe, and a meteorological
+                    station.  It operated from 25 May to 10 November 2008.
+                </description>
+                <Internal_Reference>
+                    <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.phx</lid_reference>
+                    <reference_type>is_instrument_host</reference_type>
+                </Internal_Reference>
+            </Observing_System_Component>
+            <Observing_System_Component>
+                <name>Surface Stereo Imager</name>
+                <type>Instrument</type>
+                <description>
+                    The Surface Stereo Imager (SSI) was the primary camera on the Phoenix
+                    spacecraft. It was a higher resolution version of the imager used for 
+                    Mars Pathfinder and was provided by the University of Arizona in 
+                    collaboration with the Max Planck Institute for Solar System Research.
+                </description>
+                <Internal_Reference>
+                    <lid_reference>urn:nasa:pds:context:instrument:ssi.phx</lid_reference>
+                    <reference_type>is_instrument</reference_type>
+                </Internal_Reference>
+            </Observing_System_Component>
+            <Observing_System_Component>
+                <name>Telltale</name>
+                <type>Instrument</type>
+                <description>
+                    The Telltale provided a coarse estimate of wind speed and direction. 
+                    It was a lightweight cylinder suspended by Kevlar fibers from an arm
+                    at the top of the meteorological mast.  Wind speed was estimated from 
+                    the amount of deflection that was observed in images, while the wind 
+                    direction was provided by the deflection direction. A mirror and a 
+                    calibration cross pattern, which could be imaged simultaneously with
+                    the Telltale, were employed to increase the accuracy of the measurement.
+                    SSI and RAC cameras could both provide the images, though the SSI was 
+                    typically used.  Telltale was designed and at constructed at Aarhus
+                    University in Denmark.
+                </description>
+                <Internal_Reference>
+                    <lid_reference>urn:nasa:pds:context:instrument:tt.phx</lid_reference>
+                    <reference_type>is_instrument</reference_type>
+                </Internal_Reference>
+            </Observing_System_Component>
+        </Observing_System>
+        <Target_Identification>
+            <name>Mars</name>
+            <type>Planet</type>
+            <description>
+                Mars is a rocky planet, fourth in order from the sun.  It has an equatorial
+                radius of approximately 3394 km, massive (but apparently inactive) volcanoes,
+                impact craters, deep canyons, a thin atmosphere, and seasonal changes.  Its 
+                atmosphere is primarily carbon dioxide with small quantities of water, both 
+                of which condense to form caps in the polar regions.  Noontime surface 
+                temperatures near the equator occasionally rise above the freezing point of 
+                water, making it an interesting target for spacecraft explorations seeking 
+                signs of life beyond Earth.
+            </description>
+            <Internal_Reference>
+                <lidvid_reference>urn:nasa:pds:context:target:planet.mars::1.0</lidvid_reference>
+                <reference_type>data_to_target</reference_type>
+            </Internal_Reference>
+        </Target_Identification>
+        
+        <Mission_Area>
+        </Mission_Area>
+        <Discipline_Area>
+        </Discipline_Area>        
+    </Observation_Area>
+    
+    <Reference_List>
+        <Internal_Reference>
+            <lidvid_reference>urn:nasa:pds:context:investigation:mission.phoenix::1.0</lidvid_reference>
+            <reference_type>data_to_associate</reference_type>
+        </Internal_Reference>
+        <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.phx</lid_reference>
+            <reference_type>data_to_associate</reference_type>
+        </Internal_Reference>
+        <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:instrument:ssi.phx</lid_reference>
+            <reference_type>data_to_associate</reference_type>
+        </Internal_Reference>
+        <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:instrument:tt.phx</lid_reference>
+            <reference_type>data_to_associate</reference_type>
+        </Internal_Reference>
+        <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:target:target.mars</lid_reference>
+            <reference_type>data_to_associate</reference_type>
+        </Internal_Reference>
+        <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:node:node.atmos</lid_reference>
+            <reference_type>data_to_associate</reference_type>
+        </Internal_Reference>
+    </Reference_List>
+    
+    <File_Area_Observational>
+        <File>
+            <file_name>BIN_TABLE_LSB.DAT</file_name>
+            <local_identifier>ATM_PRODUCT_TABLE_BINARY_ID</local_identifier>
+            <creation_date_time>2015-09-18T03:11:00Z</creation_date_time>
+            <file_size unit="byte">1288</file_size>
+            <records>23</records>
+            <md5_checksum>07ddf5fe707ee3ad31589e856240c68c</md5_checksum>
+        </File> 
+        <Table_Binary>
+            <local_identifier>PHX-M-TT-5-WIND-VEL-DIR_TABLE_BINARY_LSB</local_identifier>
+            <offset unit="byte">0</offset>
+            <records>23</records>
+            <description>
+                Table has 23 records of 56 bytes each.  
+                The last 3 bytes in each record are undefined.
+            </description>
+            
+            <Record_Binary>
+                <fields>10</fields>
+                <groups>0</groups>
+                <record_length unit="byte">56</record_length>
+                
+                <Field_Binary>
+                    <name>SOL</name>
+                    <field_number>1</field_number>
+                    <field_location unit="byte">1</field_location>
+                    <data_type>SignedLSB4</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%3d</field_format>
+                    <description>
+                        The number of martian days past Phoenix landing,
+                        where the day of landing was Sol 0.
+                    </description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Local True Solar Time</name>
+                    <field_number>2</field_number>
+                    <field_location unit="byte">5</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%5.3f</field_format>
+                    <description>
+                        The fractional Mars day past true martian noon
+                        at the observing location.
+                    </description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Local Mean Solar Time</name>
+                    <field_number>3</field_number>
+                    <field_location unit="byte">9</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%9.5f</field_format>
+                    <description>
+                        The number of full and partial Mars days past Phoenix landing
+                        calculated using the mean Mars day.
+                    </description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Wind Speed</name>
+                    <field_number>4</field_number>
+                    <field_location unit="byte">13</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%5.3f</field_format>
+                    <unit>m/s</unit>
+                    <description>Wind speed in meters per second</description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Wind Speed Positive Uncertainty</name>
+                    <field_number>5</field_number>
+                    <field_location unit="byte">17</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%4.2f</field_format>
+                    <unit>m/s</unit>
+                    <description>Positive uncertainty in wind speed.</description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Wind Speed Negative Uncertainty</name>
+                    <field_number>6</field_number>
+                    <field_location unit="byte">21</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%7.5f</field_format>
+                    <unit>m/s</unit>
+                    <description>Negative uncertainty in wind speed.</description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Wind Direction</name>
+                    <field_number>7</field_number>
+                    <field_location unit="byte">25</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%10.6f</field_format>
+                    <unit>deg</unit>
+                    <description>
+                        Wind direction in degrees using the
+                        the meteorological convention (0 = from N,
+                        90 = from E, 180 = from S, 270 = from W)
+                    </description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Direction Uncertainty</name>
+                    <field_number>8</field_number>
+                    <field_location unit="byte">29</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%8.4f</field_format>
+                    <unit>deg</unit>
+                    <description>
+                        Uncertainty in wind direction (given in degrees).
+                        If Wind Speed Positive Uncertainty is larger than Wind Speed, 
+                        then Direction Uncertainty is set to 180.
+                    </description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>Exposure Time</name>
+                    <field_number>9</field_number>
+                    <field_location unit="byte">33</field_location>
+                    <data_type>IEEE754LSBSingle</data_type>
+                    <field_length unit="byte">4</field_length>
+                    <field_format>%7.1f</field_format>
+                    <unit>ms</unit>
+                    <description>
+                        SSI exposure time in milliseconds.
+                    </description>
+                </Field_Binary>
+                <Field_Binary>
+                    <name>File Name</name>
+                    <field_number>10</field_number>
+                    <field_location unit="byte">37</field_location>
+                    <data_type>ASCII_File_Name</data_type>
+                    <field_length unit="byte">17</field_length>
+                    <field_format>%-17s</field_format>
+                    <description>
+                        Name of the image file used in the analysis.
+                    </description>
+                </Field_Binary>
+            </Record_Binary>
+        </Table_Binary>
+    </File_Area_Observational>
+</Product_Observational>
