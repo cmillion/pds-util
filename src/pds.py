@@ -2,16 +2,21 @@ import pds4_tools
 import numpy as np
 import pandas as pd
 import os
+import sys
 from collections import OrderedDict
+
+""" What follows are mostly wrappers for pds4_tools that output the data
+into formats that I find to be much more straightforward to work with, i.e.
+Pandas DataFrames, NumPy arrays, and Comma Separated Value (CSV) files. """
 
 def read_dat(filename,write_csv=False,quiet=True):
     """ Reads a PDS4 .dat format file, preserving column order and data type,
     except that byte order is switched to native if applicable. The .dat file
     and .xml label must exist in the same directory.
     """
-    if filename[-4:]=='.dat':
-        filename = filename.replace('.dat','.xml')
-    if filename[-4:]!='.xml':
+    if filename[-4:].lower()=='.dat':
+        filename = filename[:-4]+'.xml'
+    if filename[-4:].lower()!='.xml':
         raise TypeError('Unknown filetype: {ext}'.format(ext=filename[-4:]))
     structures = pds4_tools.pds4_read(filename,quiet=quiet)
     dat_dict = OrderedDict({})
