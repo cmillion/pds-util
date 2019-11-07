@@ -54,28 +54,29 @@ def bytes_to_string(nbytes):
     nbytes /= 1024.0
     return "%.1fGb" % nbytes
 
+
 def download_with_progress_bar(data_url, file_path, force=False, quiet=False):
     if os.path.exists(file_path) and not force:
         if not quiet:
             print("{fn} already exists.".format(fn=file_path.split("/")[-1]))
             print("\t Use `force` to redownload.")
-        return
+        return 0
     if not os.path.exists(os.path.dirname(file_path)):
         os.makedirs(os.path.dirname(file_path))
     num_units = 40
     try:
         fhandle = urlopen(data_url)
     except HTTPError as e:
-        #print("***", e)
-        #print("\t", data_url)
+        # print("***", e)
+        # print("\t", data_url)
         return 1
     content_length = url_content_length(fhandle)
     chunk_size = content_length // num_units
     print(
-            "Downloading -from- {url}\n\t-to- {cal_dir}".format(
-                url=data_url, cal_dir=os.path.dirname(file_path)
-            )
+        "Downloading -from- {url}\n\t-to- {cal_dir}".format(
+            url=data_url, cal_dir=os.path.dirname(file_path)
         )
+    )
     nchunks = 0
     buf = BytesIO()
     content_length_str = bytes_to_string(content_length)
@@ -137,9 +138,8 @@ def filetype(filename):
             # presumed PDS4 .DAT with detached xml label
             return "PDS4DAT"
     else:
-        print("*** Unsupported file type: [...]{end}".format(
-                                                end=filename[-10:]))
-        return 'UNK'
+        print("*** Unsupported file type: [...]{end}".format(end=filename[-10:]))
+        return "UNK"
 
 
 def has_attached_label(filename):
@@ -155,7 +155,7 @@ def parse_attached_label(filename):
     # First grab the entries from the label that define how to read the label
     with open(filename, "rb") as f:
         for line_ in f:
-            line = line_.decode('utf-8').strip() # hacks through a rare error
+            line = line_.decode("utf-8").strip()  # hacks through a rare error
             if "PDS_VERSION_ID" in line:
                 PDS_VERSION_ID = line.strip().split("=")[1]
             if "RECORD_BYTES" in line:
@@ -165,20 +165,25 @@ def parse_attached_label(filename):
                 break
     # Read the label and then parse it with PVL
     try:
-        with open(filename,"rb") as f:
+        with open(filename, "rb") as f:
             return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)))
     except:
-        with open(filename,"rb") as f:
-            return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)),strict=False)
+        with open(filename, "rb") as f:
+            return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)), strict=False)
+
 
 def parse_label(filename):
     """ Wraps forking paths for attached and detached PDS3 labels.
     """
     if not has_attached_label(filename):
-        if os.path.exists(filename[:filename.rfind('.')]+'.LBL'):
-            return pvl.load(filename[:filename.rfind('.')]+'.LBL')
-        elif os.path.exists(filename[:filename.rfind('.')]+'.lbl'):
-            return pvl.load(filename[:filename.rfind('.')]+'.lbl')
+        if os.path.exists(filename[: filename.rfind(".")] + ".LBL"):
+            return pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".LBL"))
+        elif os.path.exists(filename[: filename.rfind(".")] + ".lbl"):
+            return pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".lbl"))
+        elif os.path.exists(filename[: filename.rfind(".")] + ".xml"):
+            return pds4_tools.read(
+                filename[: filename.rfind(".")] + ".xml", quiet=True
+            ).label.to_dict()
         else:
             print("Unable to locate file label.")
             return None
@@ -213,7 +218,9 @@ def sample_types():
         "REAL": ">f",
         "MAC_REAL": ">f",
         "SUN_REAL": ">f",
-        }
+    }
+
+
 #        'IEEE_COMPLEX': '>c',
 #        'COMPLEX': '>c',
 #        'MAC_COMPLEX': '>c',
@@ -245,7 +252,7 @@ def data_start_byte(label, pointer):
         if type(label[pointer][0]) is int:
             return label[pointer][0]
         elif type(label[pointer][-1]) is int:
-            return label["RECORD_BYTES"] * (label[pointer][-1] -1)
+            return label["RECORD_BYTES"] * (label[pointer][-1] - 1)
         else:
             return 0
     elif type(label[pointer]) is str:
@@ -255,14 +262,12 @@ def data_start_byte(label, pointer):
         raise
 
 
-def read_img(filename):
+def read_image(filename):  # ^IMAGE
     """ Read a PDS IMG formatted file into an array.
-    Return the data _and_ the label.
+    TODO: Check for and account for LINE_PREFIX.
+    TODO: Check for and apply BIT_MASK.
     """
     label = parse_label(filename)
-    if not label:
-        print("Unable to open image.")
-        return None, None
     if "IMAGE" in label.keys():
         BYTES_PER_PIXEL = int(label["IMAGE"]["SAMPLE_BITS"] / 8)
         DTYPE = sample_types()[label["IMAGE"]["SAMPLE_TYPE"]]
@@ -272,11 +277,11 @@ def read_img(filename):
             BANDS = label["IMAGE"]["BANDS"]
         except KeyError:
             BANDS = 1
-        pixels = (nrows * ncols * BANDS)
+        pixels = nrows * ncols * BANDS
     else:
         print("*** IMG w/ old format attached label not currently supported.")
         print("\t{fn}".format(fn=filename))
-        return None,None
+        return None, None
     fmt = "{endian}{pixels}{fmt}".format(endian=DTYPE[0], pixels=pixels, fmt=DTYPE[-1])
     try:  # a little decision tree to seamlessly deal with compression
         if filename.endswith(".gz"):
@@ -286,15 +291,99 @@ def read_img(filename):
         else:
             f = open(filename, "rb")
         f.seek(data_start_byte(label, "^IMAGE"))
-        img = np.array(struct.unpack(fmt, f.read(pixels * BYTES_PER_PIXEL)))
+        image = np.array(struct.unpack(fmt, f.read(pixels * BYTES_PER_PIXEL)))
         # Make sure that single-band images are 2-dim arrays.
         if BANDS == 1:
-            img = img.reshape(nrows,ncols)
+            image = image.reshape(nrows, ncols)
         else:
-            img = img.reshape(BANDS,nrows,ncols)
+            image = image.reshape(BANDS, nrows, ncols)
     finally:
         f.close()
-    return img, label
+    # if len(np.shape(image))==2:
+    #    plt.figure(figsize=(10,10))
+    #    plt.title(filename.split('/')[-1])
+    #    plt.imshow(image,cmap='gray')
+    return image
+
+
+def read_image_header(filename):  # ^IMAGE_HEADER
+    label = parse_label(filename)
+    try:
+        with open(filename, "rb") as f:
+            f.seek(data_start_byte(label, "^IMAGE_HEADER"))
+            image_header = pvl_to_dict(pvl.load(f.read(label["IMAGE_HEADER"]["BYTES"])))
+        return image_header
+    except:
+        print("Unable to parse image header.")
+        return
+
+
+def read_telemetry_table(filename):  # ^TELEMETRY_TABLE
+    label = parse_label(filename)
+    with open(filename, "rb") as f:
+        f.seek(data_start_byte(label, "^TELEMETRY_TABLE"))
+        telemetry_table = f.read(
+            label["TELEMETRY_TABLE"]["ROWS"]
+            * label["TELEMETRY_TABLE"]["COLUMNS"]
+            * label["TELEMETRY_TABLE"]["ROW_BYTES"]
+        )
+    print(
+        "TELEMETRY_TABLE not parsable without file: {STRUCTURE}".format(
+            STRUCTURE=label["TELEMETRY_TABLE"]["^STRUCTURE"]
+        )
+    )
+    return telemetry_table
+
+
+def read_bad_data_values_header(filename):  # ^BAD_DATA_VALUES_HEADER
+    label = parse_label(filename)
+    with open(filename, "rb") as f:
+        f.seek(data_start_byte(label, "^BAD_DATA_VALUES_HEADER"))
+        bad_data_values_header = f.read(label["BAD_DATA_VALUES_HEADER"]["BYTES"])
+    print(
+        "BAD_DATA_VALUES_HEADER not parsable without file: {DESCRIPTION}".format(
+            DESCRIPTION=label["BAD_DATA_VALUES_HEADER"]["^DESCRIPTION"]
+        )
+    )
+    return bad_data_values_header
+
+
+def read_line_prefix_table(filename):
+    print("LINE_PREFIX_TABLE is TBD.")
+    return
+
+
+def read_histogram(filename):
+    label = parse_label(filename)
+    DTYPE = sample_types()[label["HISTOGRAM"]["DATA_TYPE"]]
+    if label["HISTOGRAM"]["ITEM_BYTES"] == 4:
+        DTYPE = DTYPE[0] + "i"  # because why would the type
+        # definitions be consistent?
+    items = label["HISTOGRAM"]["ITEMS"]
+    with open(filename, "rb") as f:
+        fmt = "{endian}{items}{fmt}".format(endian=DTYPE[0], items=items, fmt=DTYPE[-1])
+        f.seek(data_start_byte(label, "^HISTOGRAM"))
+        histogram = np.array(
+            struct.unpack(fmt, f.read(items * label["HISTOGRAM"]["ITEM_BYTES"]))
+        )
+    return histogram
+
+
+def read_table(filename):
+    print("Table data not yet supported.")
+    return
+
+
+def read_engineering_table(filename):
+    return read_table(filename)
+
+
+def read_measurement_table(filename):
+    return read_table(filename)
+
+
+def read_mslmmm_compressed(filename):
+    print("Do not yet support Malin's bespoke compressed format.")
 
 
 def read_fits(filename, dim=0, quiet=True):
@@ -311,7 +400,7 @@ def read_fits(filename, dim=0, quiet=True):
     )
 
 
-def read_dat(filename, write_csv=False, quiet=True):
+def read_dat_pds4(filename, write_csv=False, quiet=True):
     """ Reads a PDS4 .dat format file, preserving column order and data type,
     except that byte order is switched to native if applicable. The .dat file
     and .xml label must exist in the same directory.
@@ -336,23 +425,22 @@ def read_dat(filename, write_csv=False, quiet=True):
     dataframe = pd.DataFrame(dat_dict)
     if write_csv:
         dataframe.to_csv(filename.replace(".xml", ".csv"), index=False)
-    return (
-        dataframe,
-        pds4_tools.read(filename.replace(".dat", ".xml"), quiet=True).label.to_dict(),
-    )
+    return dataframe
+
 
 def read_dat_pds3(filename):
     if not has_attached_label(filename):
         print("*** DAT w/ detached PDS3 LBL not currently supported.")
         try:
-            et=parse_label(filename)['COMPRESSED_FILE']['ENCODING_TYPE']
-            print('\tENCODING_TYPE = {et}'.format(et=et))
+            et = parse_label(filename)["COMPRESSED_FILE"]["ENCODING_TYPE"]
+            print("\tENCODING_TYPE = {et}".format(et=et))
         except:
             pass
     else:
         print("*** DAT w/ attached PDS3 LBL not current supported.")
     print("\t{fn}".format(fn=filename))
     return None, None
+
 
 def dat_to_csv(filename):
     """ Converts a PDS4 file to a Comma Separated Value (CSV) file with
@@ -361,20 +449,68 @@ def dat_to_csv(filename):
     """
     _ = read_dat(filename, write_csv=True)
 
+
 def unknown(filename):
     print("\t{fn}".format(fn=filename))
     return None, None
 
+
+# def read_any_file(filename):
+class data:
+    def __init__(self, filename):
+        pointer_to_function = {
+            "^IMAGE": read_image,
+            "^IMAGE_HEADER": read_image_header,
+            "^TELEMETRY_TABLE": read_telemetry_table,
+            "^BAD_DATA_VALUES_HEADER": read_bad_data_values_header,
+            "^LINE_PREFIX_TABLE": read_line_prefix_table,
+            "^HISTOGRAM": read_histogram,
+            "^MEASUREMENT_TABLE": read_measurement_table,
+            "^ENGINEERING_TABLE": read_engineering_table,
+            "MSLMMM-COMPRESSED": read_mslmmm_compressed,
+        }
+
+        # Try PDS4 options
+        if os.path.exists(filename[: filename.rfind(".")] + ".xml"):
+            if filename.endswith(".dat"):
+                self.dat = read_dat_pds4(filename)
+                self.label = pds4_tools.read(
+                    filename.replace(".dat", ".xml")
+                ).label.to_dict()
+                # print('DAT_PDS4',type(data))
+        else:
+            # Try PDS3 options
+            label = parse_label(filename)
+            try:
+                pointers = [k for k in label.keys() if k[0] is "^"]
+            except AttributeError:
+                return
+            try:
+                if label["COMPRESSED_FILE"]["ENCODING_TYPE"] == "MSLMMM-COMPRESSED":
+                    pointers += [label["COMPRESSED_FILE"]["ENCODING_TYPE"]]
+            except:
+                pass
+            setattr(self,'LABEL',label)
+            print(filename)
+            if len(pointers):
+                print("\t", pointers)
+                for pointer in pointers:
+                    try:
+                        setattr(
+                            self,
+                            pointer[1:] if pointer.startswith("^") else pointer,
+                            pointer_to_function[pointer](filename),
+                        )
+                    except KeyError:
+                        pass
+            else:
+                print("\t*** No pointers. ***")
+
+
 class read:
     def __init__(self, filename):
         self.filename = filename
-        (self.data, self.label) = {
-            "IMG": read_img,
-            "FITS": read_fits,
-            "PDS4DAT": read_dat,
-            "PDS3DAT": read_dat_pds3,
-            "UNK": unknown,
-            }[filetype(filename)](filename)
+        self.data = data(filename)
 
 
 class io:
@@ -383,3 +519,45 @@ class io:
 
     def read(filename):
         return read(filename)
+
+
+def url_to_path(url, testdir="../src/test"):
+    dirstart = url.split("://")[1].find("/")
+    filename = testdir + url.split("://")[1][dirstart:]
+    return filename
+
+
+def download_data_and_label(url):
+    filename = url_to_path(url)
+    if download_with_progress_bar(url, filename, quiet=True):
+        print("An error has occurred: {fn}".format(fn=filename))
+        return 1
+    for ext in [".LBL", ".lbl", ".xml", ".XML"]:
+        if not download_with_progress_bar(
+            url[: url.rfind(".")] + ext,
+            filename[: filename.rfind(".")] + ext,
+            quiet=True,
+        ):
+            break
+    return 0
+
+
+def download_test_data(
+    ndata,
+    testdir="../src/test",
+    refdatafile="refdata.csv",
+):
+    refdata = pd.read_csv(refdatafile, comment="#")
+    for i, url in enumerate(refdata["url"][:ndata]):
+        _ = download_data_and_label(url)
+    return
+
+
+def test_io(
+    ndata,
+    testdir="../src/test",
+    refdata=pd.read_csv("refdata.csv", comment="#"),
+):
+    for i, url in enumerate(refdata["url"][:ndata]):
+        filename = url_to_path(url)
+        read(filename)
