@@ -383,6 +383,14 @@ def read_measurement_table(filename):
 
 
 def read_mslmmm_compressed(filename):
+    """ WARNING: Placeholder functionality.
+    This will run `dat2img` to decompress the file from Malin's bespoke
+    image compression format (which has no obvious purpose other than
+    obfuscation) into the local direction, then read the resulting file,
+    and then delete it.
+    TODO: Modify dat2img.c and pdecom_msl.c
+    """
+    #_ = os.system('./MMM_DAT2IMG/dat2img {fn}'.format(fn=filename))
     print("Do not yet support Malin's bespoke compressed format.")
 
 
