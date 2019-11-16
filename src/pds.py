@@ -206,7 +206,8 @@ def sample_types():
         "UNSIGNED_INTEGER": ">B",
         "MAC_UNSIGNED_INTEGER": ">B",
         "SUN_UNSIGNED_INTEGER": ">B",
-        "LSB_INTEGER": "<h",
+        #"LSB_INTEGER": "<h",
+        "LSB_INTEGER": "<B",
         "PC_INTEGER": "<h",
         "VAX_INTEGER": "<h",
         "LSB_UNSIGNED_INTEGER": "<B",
@@ -390,7 +391,7 @@ def read_mslmmm_compressed(filename):
     and then delete it.
     TODO: Modify dat2img.c and pdecom_msl.c
     """
-    #_ = os.system('./MMM_DAT2IMG/dat2img {fn}'.format(fn=filename))
+    # _ = os.system('./MMM_DAT2IMG/dat2img {fn}'.format(fn=filename))
     print("Do not yet support Malin's bespoke compressed format.")
 
 
@@ -498,7 +499,7 @@ class data:
                     pointers += [label["COMPRESSED_FILE"]["ENCODING_TYPE"]]
             except:
                 pass
-            setattr(self,'LABEL',label)
+            setattr(self, "LABEL", label)
             print(filename)
             if len(pointers):
                 print("\t", pointers)
@@ -550,11 +551,7 @@ def download_data_and_label(url):
     return 0
 
 
-def download_test_data(
-    ndata,
-    testdir="../src/test",
-    refdatafile="refdata.csv",
-):
+def download_test_data(ndata, testdir="../src/test", refdatafile="refdata.csv"):
     refdata = pd.read_csv(refdatafile, comment="#")
     for i, url in enumerate(refdata["url"][:ndata]):
         _ = download_data_and_label(url)
@@ -562,9 +559,7 @@ def download_test_data(
 
 
 def test_io(
-    ndata,
-    testdir="../src/test",
-    refdata=pd.read_csv("refdata.csv", comment="#"),
+    ndata, testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")
 ):
     for i, url in enumerate(refdata["url"][:ndata]):
         filename = url_to_path(url)
