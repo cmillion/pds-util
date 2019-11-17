@@ -343,7 +343,7 @@ def read_telemetry_table(filename):  # ^TELEMETRY_TABLE
             * label["TELEMETRY_TABLE"]["ROW_BYTES"]
         )
     print(
-        "TELEMETRY_TABLE not parsable without file: {STRUCTURE}".format(
+        "** TELEMETRY_TABLE not parsable without file: {STRUCTURE} ***".format(
             STRUCTURE=label["TELEMETRY_TABLE"]["^STRUCTURE"]
         )
     )
@@ -356,7 +356,7 @@ def read_bad_data_values_header(filename):  # ^BAD_DATA_VALUES_HEADER
         f.seek(data_start_byte(label, "^BAD_DATA_VALUES_HEADER"))
         bad_data_values_header = f.read(label["BAD_DATA_VALUES_HEADER"]["BYTES"])
     print(
-        "BAD_DATA_VALUES_HEADER not parsable without file: {DESCRIPTION}".format(
+        "*** BAD_DATA_VALUES_HEADER not parsable without file: {DESCRIPTION} ***".format(
             DESCRIPTION=label["BAD_DATA_VALUES_HEADER"]["^DESCRIPTION"]
         )
     )
@@ -364,7 +364,7 @@ def read_bad_data_values_header(filename):  # ^BAD_DATA_VALUES_HEADER
 
 
 def read_line_prefix_table(filename):
-    print("LINE_PREFIX_TABLE is TBD.")
+    print("*** LINE_PREFIX_TABLE is TBD. ***")
     return
 
 
@@ -484,6 +484,29 @@ def unknown(filename):
     print("\t{fn}".format(fn=filename))
     return None, None
 
+def read_file_name(filename): # ^FILENAME
+    print("*** FILE_NAME not yet supported. ***")
+    return
+
+def read_description(filename): # ^DESCRIPTION
+    print("*** DESCRIPTION not yet supported. ***")
+    return
+
+def read_adbr_table(filename): # ^ADBR_TABLE
+    print("*** ADBR_TABLE not yet supported. ***")
+    return
+
+def read_array(filename): # ^ARRAY
+    print("*** ARRAY not yet supported. ***")
+    return
+
+def read_vicar_header(filename): # ^VICAR_HEADER
+    print("*** VICAR_HEADER not yet supported. ***")
+    return
+
+def read_vicar_extension_header(filename): # ^VICAR_EXTENSION_HEADER
+    print("*** VICAR_EXTENSION_HEADER not yet supported. ***")
+    return 
 
 # def read_any_file(filename):
 class data:
@@ -499,6 +522,12 @@ class data:
             "^MEASUREMENT_TABLE": read_measurement_table,
             "^ENGINEERING_TABLE": read_engineering_table,
             "^SPECTRUM": read_spectrum,
+            "^FILE_NAME": read_file_name,
+            "^DESCRIPTION": read_description,
+            "^ABDR_TABLE": read_abdr_table,
+            "^ARRAY": read_array,
+            "^VICAR_HEADER": read_vicar_header,
+            "^VICAR_EXTENSION_HEADER": read_vicar_extension_header,
             "MSLMMM-COMPRESSED": read_mslmmm_compressed,
             "JP2": read_jp2,
         }
