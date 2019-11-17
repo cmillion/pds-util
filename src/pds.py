@@ -185,18 +185,25 @@ def parse_label(filename):
                 filename[: filename.rfind(".")] + ".xml", quiet=True
             ).label.to_dict()
         else:
-            print("Unable to locate file label.")
+            print("*** Unable to locate file label. ***")
             return None
     else:
         return parse_attached_label(filename)
 
 
-def sample_types():
+def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
     """ Defines a translation from PDS data types to Python data types.
 
     TODO: The commented-out types below are technically valid PDS3
         types, but I haven't yet worked out the translation to Python.
     """
+    if SAMPLE_TYPE == "LSB_INTEGER": # inconsistently defined in PDS3
+        if SAMPLE_BYTES==1:
+            return "<B"
+        elif SAMPLE_BYTES==2:
+            return "<H"
+        else:
+            raise # WTF
     return {
         "MSB_INTEGER": ">h",
         "INTEGER": ">h",
@@ -206,8 +213,9 @@ def sample_types():
         "UNSIGNED_INTEGER": ">B",
         "MAC_UNSIGNED_INTEGER": ">B",
         "SUN_UNSIGNED_INTEGER": ">B",
+        # LSB_INTEGER is defined both ways in the PDS!
         #"LSB_INTEGER": "<h",
-        "LSB_INTEGER": "<B",
+        #"LSB_INTEGER": "<B",
         "PC_INTEGER": "<h",
         "VAX_INTEGER": "<h",
         "LSB_UNSIGNED_INTEGER": "<B",
@@ -219,7 +227,7 @@ def sample_types():
         "REAL": ">f",
         "MAC_REAL": ">f",
         "SUN_REAL": ">f",
-    }
+    }[SAMPLE_TYPE]
 
 
 #        'IEEE_COMPLEX': '>c',
@@ -271,7 +279,8 @@ def read_image(filename):  # ^IMAGE
     label = parse_label(filename)
     if "IMAGE" in label.keys():
         BYTES_PER_PIXEL = int(label["IMAGE"]["SAMPLE_BITS"] / 8)
-        DTYPE = sample_types()[label["IMAGE"]["SAMPLE_TYPE"]]
+        DTYPE = sample_types(label["IMAGE"]["SAMPLE_TYPE"],
+                             BYTES_PER_PIXEL)
         nrows = label["IMAGE"]["LINES"]
         ncols = label["IMAGE"]["LINE_SAMPLES"]
         try:
@@ -315,7 +324,7 @@ def read_image_header(filename):  # ^IMAGE_HEADER
             image_header = pvl_to_dict(pvl.load(f.read(label["IMAGE_HEADER"]["BYTES"])))
         return image_header
     except:
-        print("Unable to parse image header.")
+        print("*** Unable to parse image header. ***")
         return
 
 
@@ -356,7 +365,7 @@ def read_line_prefix_table(filename):
 
 def read_histogram(filename):
     label = parse_label(filename)
-    DTYPE = sample_types()[label["HISTOGRAM"]["DATA_TYPE"]]
+    DTYPE = sample_types(label["HISTOGRAM"]["DATA_TYPE"],0)
     if label["HISTOGRAM"]["ITEM_BYTES"] == 4:
         DTYPE = DTYPE[0] + "i"  # because why would the type
         # definitions be consistent?
