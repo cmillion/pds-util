@@ -161,12 +161,19 @@ def parse_attached_label(filename):
             if "RECORD_BYTES" in line:
                 RECORD_BYTES = int(line.strip().split("=")[1])
             if "LABEL_RECORDS" in line:
-                LABEL_RECORDS = int(line.strip().split("=")[1])
+                if '<BYTES>' in line:
+                    # Convert pointer value to bytes like everything else
+                    LABEL_RECORDS = line.strip().split('=')[1].split()[0] * 8
+                else:
+                    LABEL_RECORDS = int(line.strip().split("=")[1])
                 break
     # Read the label and then parse it with PVL
     try:
         with open(filename, "rb") as f:
             return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)))
+    except UnboundLocalError:
+        print('*** RECORD_BYTES not set??? ***')
+        return None
     except:
         with open(filename, "rb") as f:
             return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)), strict=False)
@@ -203,7 +210,7 @@ def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
         elif SAMPLE_BYTES==2:
             return "<H"
         else:
-            raise # WTF
+            raise # WTF: SAMPLE_TYPE + SAMPLE_BYTES
     return {
         "MSB_INTEGER": ">h",
         "INTEGER": ">h",
@@ -229,7 +236,7 @@ def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
         "SUN_REAL": ">f",
     }[SAMPLE_TYPE]
 
-
+# Possibly unused in PDS3: just park them here unless needed
 #        'IEEE_COMPLEX': '>c',
 #        'COMPLEX': '>c',
 #        'MAC_COMPLEX': '>c',
@@ -241,7 +248,6 @@ def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
 #        'LSB_BIT_STRING': '<S',
 #        'VAX_BIT_STRING': '<S',
 
-
 def get_data_types(filename):
     """ Placeholder function for the fact that PDS3 can contain multiple
     types of data (e.g. an image and a header) which are defined by
@@ -250,7 +256,6 @@ def get_data_types(filename):
     for k in parse_label(filename).keys():
         if k.startswith("^"):
             print(k)
-
 
 def data_start_byte(label, pointer):
     """ Determine the first byte of the data in an IMG file from its pointer.
@@ -363,7 +368,7 @@ def read_line_prefix_table(filename):
     return
 
 
-def read_histogram(filename):
+def read_histogram(filename): # ^HISTOGRAM
     label = parse_label(filename)
     DTYPE = sample_types(label["HISTOGRAM"]["DATA_TYPE"],0)
     if label["HISTOGRAM"]["ITEM_BYTES"] == 4:
@@ -379,18 +384,25 @@ def read_histogram(filename):
     return histogram
 
 
-def read_table(filename):
-    print("Table data not yet supported.")
+def read_table(filename): # ^TABLE
+    print("*** TABLE data not yet supported. ***")
     return
 
 
-def read_engineering_table(filename):
+def read_engineering_table(filename): # ^ENGINEERING_TABLE
     return read_table(filename)
 
 
-def read_measurement_table(filename):
+def read_measurement_table(filename): # ^MEASUREMENT_TABLE
     return read_table(filename)
 
+def read_spectrum(filename): # ^SPECTRUM
+    print("*** SPECTRUM data not yet supported. ***")
+    return
+
+def read_jp2(filename): # .JP2 extension
+    print("*** JP2 filetype not yet supported. ***")
+    return
 
 def read_mslmmm_compressed(filename):
     """ WARNING: Placeholder functionality.
@@ -483,9 +495,12 @@ class data:
             "^BAD_DATA_VALUES_HEADER": read_bad_data_values_header,
             "^LINE_PREFIX_TABLE": read_line_prefix_table,
             "^HISTOGRAM": read_histogram,
+            "^TABLE": read_table,
             "^MEASUREMENT_TABLE": read_measurement_table,
             "^ENGINEERING_TABLE": read_engineering_table,
+            "^SPECTRUM": read_spectrum,
             "MSLMMM-COMPRESSED": read_mslmmm_compressed,
+            "JP2": read_jp2,
         }
 
         # Try PDS4 options
@@ -521,6 +536,8 @@ class data:
                         )
                     except KeyError:
                         pass
+            elif '.JP2' in filename:
+                print('*** Do not yet suport JP2 images. ***')
             else:
                 print("\t*** No pointers. ***")
 
@@ -571,5 +588,6 @@ def test_io(
     ndata, testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")
 ):
     for i, url in enumerate(refdata["url"][:ndata]):
+        print(i)
         filename = url_to_path(url)
         read(filename)
