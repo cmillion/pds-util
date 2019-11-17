@@ -492,7 +492,7 @@ def read_description(filename): # ^DESCRIPTION
     print("*** DESCRIPTION not yet supported. ***")
     return
 
-def read_adbr_table(filename): # ^ADBR_TABLE
+def read_abdr_table(filename): # ^ABDR_TABLE
     print("*** ADBR_TABLE not yet supported. ***")
     return
 
