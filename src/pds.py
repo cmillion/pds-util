@@ -10,6 +10,7 @@ import struct
 import pvl
 import gzip
 import bz2
+import matplotlib.pyplot as plt
 
 """
 The following three functions are substantially derived from code in
@@ -314,12 +315,21 @@ def read_image(filename):  # ^IMAGE
             image = image.reshape(BANDS, nrows, ncols)
     finally:
         f.close()
-    # if len(np.shape(image))==2:
-    #    plt.figure(figsize=(10,10))
-    #    plt.title(filename.split('/')[-1])
-    #    plt.imshow(image,cmap='gray')
+    #plt.figure(figsize=(4,4))
+    #plt.title(filename.split('/')[-1])
+    #plt.xticks([])
+    #plt.yticks([])
+    if len(np.shape(image))==2:
+        #plt.imshow(image,cmap='gray')
+        pass
+    elif len(np.shape(image))==3:
+        if np.shape(image)[0]==3:
+            image = np.stack(
+                [image[0,:,:],image[1,:,:],image[2,:,:]],axis=2)
+        if np.shape(image)[2]==3:
+            #plt.imshow(image)
+            pass
     return image
-
 
 def read_image_header(filename):  # ^IMAGE_HEADER
     label = parse_label(filename)
@@ -410,11 +420,19 @@ def read_mslmmm_compressed(filename):
     image compression format (which has no obvious purpose other than
     obfuscation) into the local direction, then read the resulting file,
     and then delete it.
-    TODO: Modify dat2img.c and pdecom_msl.c
+    TODO: Modify dat2img.c and pdecom_msl.c, or port them, to decode the
+        data directly into a Python array.
     """
-    # _ = os.system('./MMM_DAT2IMG/dat2img {fn}'.format(fn=filename))
-    print("Do not yet support Malin's bespoke compressed format.")
-
+    _ = os.system(f'./MMM_DAT2IMG/dat2img {filename}')
+    imgfilename = filename.split('/')[-1].replace('.DAT','_00.IMG')
+    if os.path.exists(imgfilename):
+        image = read_image(imgfilename)
+        print(f'Deleting {imgfilename}')
+        os.remove(imgfilename)
+    else:
+        print(f'{imgfilename} not present.')
+        print('\tIs MMM_DAT2IMG availabe and built?')
+    return
 
 def read_fits(filename, dim=0, quiet=True):
     """ Read a PDS FITS file into an array.
@@ -485,11 +503,13 @@ def unknown(filename):
     return None, None
 
 def read_file_name(filename): # ^FILENAME
-    print("*** FILE_NAME not yet supported. ***")
-    return
+    # It just names itself.
+    label = parse_label(filename)
+    return label['^FILENAME']
 
 def read_description(filename): # ^DESCRIPTION
-    print("*** DESCRIPTION not yet supported. ***")
+    label = parse_label(filename)
+    print(f"*** DESCRIPTION not yet supported. *** (May require {label['^DESCRIPTION']})")
     return
 
 def read_abdr_table(filename): # ^ABDR_TABLE
@@ -507,6 +527,22 @@ def read_vicar_header(filename): # ^VICAR_HEADER
 def read_vicar_extension_header(filename): # ^VICAR_EXTENSION_HEADER
     print("*** VICAR_EXTENSION_HEADER not yet supported. ***")
     return 
+
+def read_history(filename): # ^HISTORY
+    print("*** HISTORY not yet supported. ***")
+    return
+
+def read_spectral_qube(filename): # ^SPECTRAL_QUBE
+    print("*** SPECTRAL_QUBE not yet supported. ***")
+    return
+
+def read_spacecraft_pointing_mode_desc(filename): # ^SPACECRAFT_POINTING_MODE_DESC
+    print("*** SPACECRAFT_POINTING_MODE_DESC not yet supported. ***")
+    return
+
+def read_odl_header(filename): # ^ODL_HEADER
+    print("*** ODL_HEADER not yet supported. ***")
+    return
 
 # def read_any_file(filename):
 class data:
@@ -528,6 +564,10 @@ class data:
             "^ARRAY": read_array,
             "^VICAR_HEADER": read_vicar_header,
             "^VICAR_EXTENSION_HEADER": read_vicar_extension_header,
+            "^HISTORY": read_history,
+            "^SPECTRAL_QUBE": read_spectral_qube,
+            "^SPACECRAFT_POINTING_MODE_DESC":read_spacecraft_pointing_mode_desc,
+            "^ODL_HEADER": read_odl_header,
             "MSLMMM-COMPRESSED": read_mslmmm_compressed,
             "JP2": read_jp2,
         }
@@ -614,9 +654,12 @@ def download_test_data(ndata, testdir="../src/test", refdatafile="refdata.csv"):
 
 
 def test_io(
-    ndata, testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")
+    ndata,
+    testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")
 ):
     for i, url in enumerate(refdata["url"][:ndata]):
         print(i)
         filename = url_to_path(url)
+        if not os.path.exists(filename):
+            _ = download_data_and_label(url)
         read(filename)
