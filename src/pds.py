@@ -162,9 +162,9 @@ def parse_attached_label(filename):
             if "RECORD_BYTES" in line:
                 RECORD_BYTES = int(line.strip().split("=")[1])
             if "LABEL_RECORDS" in line:
-                if '<BYTES>' in line:
+                if "<BYTES>" in line:
                     # Convert pointer value to bytes like everything else
-                    LABEL_RECORDS = line.strip().split('=')[1].split()[0] * 8
+                    LABEL_RECORDS = line.strip().split("=")[1].split()[0] * 8
                 else:
                     LABEL_RECORDS = int(line.strip().split("=")[1])
                 break
@@ -173,7 +173,7 @@ def parse_attached_label(filename):
         with open(filename, "rb") as f:
             return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)))
     except UnboundLocalError:
-        print('*** RECORD_BYTES not set??? ***')
+        print("*** RECORD_BYTES not set??? ***")
         return None
     except:
         with open(filename, "rb") as f:
@@ -199,19 +199,19 @@ def parse_label(filename):
         return parse_attached_label(filename)
 
 
-def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
+def sample_types(SAMPLE_TYPE, SAMPLE_BYTES):
     """ Defines a translation from PDS data types to Python data types.
 
     TODO: The commented-out types below are technically valid PDS3
         types, but I haven't yet worked out the translation to Python.
     """
-    if SAMPLE_TYPE == "LSB_INTEGER": # inconsistently defined in PDS3
-        if SAMPLE_BYTES==1:
+    if SAMPLE_TYPE == "LSB_INTEGER":  # inconsistently defined in PDS3
+        if SAMPLE_BYTES == 1:
             return "<B"
-        elif SAMPLE_BYTES==2:
+        elif SAMPLE_BYTES == 2:
             return "<H"
         else:
-            raise # WTF: SAMPLE_TYPE + SAMPLE_BYTES
+            raise  # WTF: SAMPLE_TYPE + SAMPLE_BYTES
     return {
         "MSB_INTEGER": ">h",
         "INTEGER": ">h",
@@ -222,8 +222,8 @@ def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
         "MAC_UNSIGNED_INTEGER": ">B",
         "SUN_UNSIGNED_INTEGER": ">B",
         # LSB_INTEGER is defined both ways in the PDS!
-        #"LSB_INTEGER": "<h",
-        #"LSB_INTEGER": "<B",
+        # "LSB_INTEGER": "<h",
+        # "LSB_INTEGER": "<B",
         "PC_INTEGER": "<h",
         "VAX_INTEGER": "<h",
         "LSB_UNSIGNED_INTEGER": "<B",
@@ -237,6 +237,7 @@ def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
         "SUN_REAL": ">f",
     }[SAMPLE_TYPE]
 
+
 # Possibly unused in PDS3: just park them here unless needed
 #        'IEEE_COMPLEX': '>c',
 #        'COMPLEX': '>c',
@@ -249,6 +250,7 @@ def sample_types(SAMPLE_TYPE,SAMPLE_BYTES):
 #        'LSB_BIT_STRING': '<S',
 #        'VAX_BIT_STRING': '<S',
 
+
 def get_data_types(filename):
     """ Placeholder function for the fact that PDS3 can contain multiple
     types of data (e.g. an image and a header) which are defined by
@@ -257,6 +259,7 @@ def get_data_types(filename):
     for k in parse_label(filename).keys():
         if k.startswith("^"):
             print(k)
+
 
 def data_start_byte(label, pointer):
     """ Determine the first byte of the data in an IMG file from its pointer.
@@ -285,15 +288,20 @@ def read_image(filename):  # ^IMAGE
     label = parse_label(filename)
     if "IMAGE" in label.keys():
         BYTES_PER_PIXEL = int(label["IMAGE"]["SAMPLE_BITS"] / 8)
-        DTYPE = sample_types(label["IMAGE"]["SAMPLE_TYPE"],
-                             BYTES_PER_PIXEL)
+        DTYPE = sample_types(label["IMAGE"]["SAMPLE_TYPE"], BYTES_PER_PIXEL)
         nrows = label["IMAGE"]["LINES"]
         ncols = label["IMAGE"]["LINE_SAMPLES"]
+        if "LINE_PREFIX_BYTES" in label["IMAGE"].keys():
+            print('Accounting for a line prefix.')
+            prefix_cols = int(label["IMAGE"]["LINE_PREFIX_BYTES"] / 
+                                                        BYTES_PER_PIXEL)
+        else:
+            prefix_cols = 0
         try:
             BANDS = label["IMAGE"]["BANDS"]
         except KeyError:
             BANDS = 1
-        pixels = nrows * ncols * BANDS
+        pixels = nrows * (ncols + prefix_cols) * BANDS
     else:
         print("*** IMG w/ old format attached label not currently supported.")
         print("\t{fn}".format(fn=filename))
@@ -310,26 +318,29 @@ def read_image(filename):  # ^IMAGE
         image = np.array(struct.unpack(fmt, f.read(pixels * BYTES_PER_PIXEL)))
         # Make sure that single-band images are 2-dim arrays.
         if BANDS == 1:
-            image = image.reshape(nrows, ncols)
+            image = image.reshape(nrows, (ncols + prefix_cols))
+            if prefix_cols:
+                # TODO: Also return the prefix
+                image = image[:,prefix_cols:]
         else:
             image = image.reshape(BANDS, nrows, ncols)
     finally:
         f.close()
-    #plt.figure(figsize=(4,4))
-    #plt.title(filename.split('/')[-1])
-    #plt.xticks([])
-    #plt.yticks([])
-    if len(np.shape(image))==2:
-        #plt.imshow(image,cmap='gray')
+    plt.figure(figsize=(4, 4))
+    plt.title(filename.split("/")[-1])
+    plt.xticks([])
+    plt.yticks([])
+    if len(np.shape(image)) == 2:
+        plt.imshow(image, cmap="gray")
         pass
-    elif len(np.shape(image))==3:
-        if np.shape(image)[0]==3:
-            image = np.stack(
-                [image[0,:,:],image[1,:,:],image[2,:,:]],axis=2)
-        if np.shape(image)[2]==3:
-            #plt.imshow(image)
+    elif len(np.shape(image)) == 3:
+        if np.shape(image)[0] == 3:
+            image = np.stack([image[0, :, :], image[1, :, :], image[2, :, :]], axis=2)
+        if np.shape(image)[2] == 3:
+            plt.imshow(image)
             pass
     return image
+
 
 def read_image_header(filename):  # ^IMAGE_HEADER
     label = parse_label(filename)
@@ -378,9 +389,9 @@ def read_line_prefix_table(filename):
     return
 
 
-def read_histogram(filename): # ^HISTOGRAM
+def read_histogram(filename):  # ^HISTOGRAM
     label = parse_label(filename)
-    DTYPE = sample_types(label["HISTOGRAM"]["DATA_TYPE"],0)
+    DTYPE = sample_types(label["HISTOGRAM"]["DATA_TYPE"], 0)
     if label["HISTOGRAM"]["ITEM_BYTES"] == 4:
         DTYPE = DTYPE[0] + "i"  # because why would the type
         # definitions be consistent?
@@ -394,25 +405,28 @@ def read_histogram(filename): # ^HISTOGRAM
     return histogram
 
 
-def read_table(filename): # ^TABLE
+def read_table(filename):  # ^TABLE
     print("*** TABLE data not yet supported. ***")
     return
 
 
-def read_engineering_table(filename): # ^ENGINEERING_TABLE
+def read_engineering_table(filename):  # ^ENGINEERING_TABLE
     return read_table(filename)
 
 
-def read_measurement_table(filename): # ^MEASUREMENT_TABLE
+def read_measurement_table(filename):  # ^MEASUREMENT_TABLE
     return read_table(filename)
 
-def read_spectrum(filename): # ^SPECTRUM
+
+def read_spectrum(filename):  # ^SPECTRUM
     print("*** SPECTRUM data not yet supported. ***")
     return
 
-def read_jp2(filename): # .JP2 extension
+
+def read_jp2(filename):  # .JP2 extension
     print("*** JP2 filetype not yet supported. ***")
     return
+
 
 def read_mslmmm_compressed(filename):
     """ WARNING: Placeholder functionality.
@@ -423,16 +437,17 @@ def read_mslmmm_compressed(filename):
     TODO: Modify dat2img.c and pdecom_msl.c, or port them, to decode the
         data directly into a Python array.
     """
-    _ = os.system(f'./MMM_DAT2IMG/dat2img {filename}')
-    imgfilename = filename.split('/')[-1].replace('.DAT','_00.IMG')
+    _ = os.system(f"./MMM_DAT2IMG/dat2img {filename}")
+    imgfilename = filename.split("/")[-1].replace(".DAT", "_00.IMG")
     if os.path.exists(imgfilename):
         image = read_image(imgfilename)
-        print(f'Deleting {imgfilename}')
+        print(f"Deleting {imgfilename}")
         os.remove(imgfilename)
     else:
-        print(f'{imgfilename} not present.')
-        print('\tIs MMM_DAT2IMG availabe and built?')
+        print(f"{imgfilename} not present.")
+        print("\tIs MMM_DAT2IMG availabe and built?")
     return
+
 
 def read_fits(filename, dim=0, quiet=True):
     """ Read a PDS FITS file into an array.
@@ -502,47 +517,57 @@ def unknown(filename):
     print("\t{fn}".format(fn=filename))
     return None, None
 
-def read_file_name(filename): # ^FILENAME
+
+def read_file_name(filename):  # ^FILE_NAME
     # It just names itself.
     label = parse_label(filename)
-    return label['^FILENAME']
+    return label["^FILE_NAME"]
 
-def read_description(filename): # ^DESCRIPTION
+
+def read_description(filename):  # ^DESCRIPTION
     label = parse_label(filename)
-    print(f"*** DESCRIPTION not yet supported. *** (May require {label['^DESCRIPTION']})")
-    return
+    return label["^DESCRIPTION"]
 
-def read_abdr_table(filename): # ^ABDR_TABLE
+
+def read_abdr_table(filename):  # ^ABDR_TABLE
     print("*** ADBR_TABLE not yet supported. ***")
     return
 
-def read_array(filename): # ^ARRAY
+
+def read_array(filename):  # ^ARRAY
     print("*** ARRAY not yet supported. ***")
     return
 
-def read_vicar_header(filename): # ^VICAR_HEADER
+
+def read_vicar_header(filename):  # ^VICAR_HEADER
     print("*** VICAR_HEADER not yet supported. ***")
     return
 
-def read_vicar_extension_header(filename): # ^VICAR_EXTENSION_HEADER
-    print("*** VICAR_EXTENSION_HEADER not yet supported. ***")
-    return 
 
-def read_history(filename): # ^HISTORY
+def read_vicar_extension_header(filename):  # ^VICAR_EXTENSION_HEADER
+    print("*** VICAR_EXTENSION_HEADER not yet supported. ***")
+    return
+
+
+def read_history(filename):  # ^HISTORY
     print("*** HISTORY not yet supported. ***")
     return
 
-def read_spectral_qube(filename): # ^SPECTRAL_QUBE
+
+def read_spectral_qube(filename):  # ^SPECTRAL_QUBE
     print("*** SPECTRAL_QUBE not yet supported. ***")
     return
 
-def read_spacecraft_pointing_mode_desc(filename): # ^SPACECRAFT_POINTING_MODE_DESC
+
+def read_spacecraft_pointing_mode_desc(filename):  # ^SPACECRAFT_POINTING_MODE_DESC
     print("*** SPACECRAFT_POINTING_MODE_DESC not yet supported. ***")
     return
 
-def read_odl_header(filename): # ^ODL_HEADER
+
+def read_odl_header(filename):  # ^ODL_HEADER
     print("*** ODL_HEADER not yet supported. ***")
     return
+
 
 # def read_any_file(filename):
 class data:
@@ -566,7 +591,7 @@ class data:
             "^VICAR_EXTENSION_HEADER": read_vicar_extension_header,
             "^HISTORY": read_history,
             "^SPECTRAL_QUBE": read_spectral_qube,
-            "^SPACECRAFT_POINTING_MODE_DESC":read_spacecraft_pointing_mode_desc,
+            "^SPACECRAFT_POINTING_MODE_DESC": read_spacecraft_pointing_mode_desc,
             "^ODL_HEADER": read_odl_header,
             "MSLMMM-COMPRESSED": read_mslmmm_compressed,
             "JP2": read_jp2,
@@ -605,8 +630,8 @@ class data:
                         )
                     except KeyError:
                         pass
-            elif '.JP2' in filename:
-                print('*** Do not yet suport JP2 images. ***')
+            elif ".JP2" in filename:
+                print("*** Do not yet suport JP2 images. ***")
             else:
                 print("\t*** No pointers. ***")
 
@@ -654,8 +679,7 @@ def download_test_data(ndata, testdir="../src/test", refdatafile="refdata.csv"):
 
 
 def test_io(
-    ndata,
-    testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")
+    ndata, testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")
 ):
     for i, url in enumerate(refdata["url"][:ndata]):
         print(i)
