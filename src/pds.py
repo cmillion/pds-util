@@ -180,24 +180,30 @@ def parse_attached_label(filename):
             return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)), strict=False)
 
 
-def parse_label(filename):
+def parse_label(filename,full=False):
     """ Wraps forking paths for attached and detached PDS3 labels.
     """
     if not has_attached_label(filename):
         if os.path.exists(filename[: filename.rfind(".")] + ".LBL"):
-            return pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".LBL"))
+            label = pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".LBL"))
         elif os.path.exists(filename[: filename.rfind(".")] + ".lbl"):
-            return pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".lbl"))
+            label = pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".lbl"))
         elif os.path.exists(filename[: filename.rfind(".")] + ".xml"):
-            return pds4_tools.read(
+            label = pds4_tools.read(
                 filename[: filename.rfind(".")] + ".xml", quiet=True
             ).label.to_dict()
         else:
             print("*** Unable to locate file label. ***")
             return None
     else:
-        return parse_attached_label(filename)
-
+        label = parse_attached_label(filename)
+    if (not full) and ('UNCOMPRESSED_FILE' in label.keys()):
+        if "COMPRESSED_FILE" in label.keys():
+            if "ENCODING_TYPE" in label["COMPRESSED_FILE"].keys():
+                if label["COMPRESSED_FILE"]["ENCODING_TYPE"] == "MSLMMM-COMPRESSED":
+                    return label
+        return label['UNCOMPRESSED_FILE']
+    return label
 
 def sample_types(SAMPLE_TYPE, SAMPLE_BYTES):
     """ Defines a translation from PDS data types to Python data types.
@@ -607,6 +613,7 @@ class data:
                 # print('DAT_PDS4',type(data))
         else:
             # Try PDS3 options
+            setattr(self, "LABEL", parse_label(filename,full=True))
             label = parse_label(filename)
             try:
                 pointers = [k for k in label.keys() if k[0] is "^"]
@@ -617,7 +624,6 @@ class data:
                     pointers += [label["COMPRESSED_FILE"]["ENCODING_TYPE"]]
             except:
                 pass
-            setattr(self, "LABEL", label)
             print(filename)
             if len(pointers):
                 print("\t", pointers)
