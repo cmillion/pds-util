@@ -10,6 +10,7 @@ import struct
 import pvl
 import gzip
 import bz2
+from zipfile import ZipFile
 import matplotlib.pyplot as plt
 
 """
@@ -180,7 +181,7 @@ def parse_attached_label(filename):
             return pvl.load(f.read(RECORD_BYTES * (LABEL_RECORDS)), strict=False)
 
 
-def parse_label(filename,full=False):
+def parse_label(filename, full=False):
     """ Wraps forking paths for attached and detached PDS3 labels.
     """
     if not has_attached_label(filename):
@@ -197,13 +198,16 @@ def parse_label(filename,full=False):
             return None
     else:
         label = parse_attached_label(filename)
-    if (not full) and ('UNCOMPRESSED_FILE' in label.keys()):
+    # TODO: This ugly conditional exists entirely to deal with Cassini data
+    # which all seem to be returning zero-value images, so maybe it's wrong!
+    if (not full) and ("UNCOMPRESSED_FILE" in label.keys()):
         if "COMPRESSED_FILE" in label.keys():
             if "ENCODING_TYPE" in label["COMPRESSED_FILE"].keys():
                 if label["COMPRESSED_FILE"]["ENCODING_TYPE"] == "MSLMMM-COMPRESSED":
                     return label
-        return label['UNCOMPRESSED_FILE']
+        return label["UNCOMPRESSED_FILE"]
     return label
+
 
 def sample_types(SAMPLE_TYPE, SAMPLE_BYTES):
     """ Defines a translation from PDS data types to Python data types.
@@ -298,9 +302,8 @@ def read_image(filename):  # ^IMAGE
         nrows = label["IMAGE"]["LINES"]
         ncols = label["IMAGE"]["LINE_SAMPLES"]
         if "LINE_PREFIX_BYTES" in label["IMAGE"].keys():
-            print('Accounting for a line prefix.')
-            prefix_cols = int(label["IMAGE"]["LINE_PREFIX_BYTES"] / 
-                                                        BYTES_PER_PIXEL)
+            print("Accounting for a line prefix.")
+            prefix_cols = int(label["IMAGE"]["LINE_PREFIX_BYTES"] / BYTES_PER_PIXEL)
         else:
             prefix_cols = 0
         try:
@@ -316,8 +319,11 @@ def read_image(filename):  # ^IMAGE
     try:  # a little decision tree to seamlessly deal with compression
         if filename.endswith(".gz"):
             f = gzip.open(filename, "rb")
-        if filename.endswith(".bz2"):
+        elif filename.endswith(".bz2"):
             f = bz2.BZ2File(filename, "rb")
+        elif filename.endswith(".ZIP"):
+            f = ZipFile(filename, "r").open(
+                ZipFile(filename, "r").infolist()[0].filename)
         else:
             f = open(filename, "rb")
         f.seek(data_start_byte(label, "^IMAGE"))
@@ -326,12 +332,14 @@ def read_image(filename):  # ^IMAGE
         if BANDS == 1:
             image = image.reshape(nrows, (ncols + prefix_cols))
             if prefix_cols:
+                # Ignore the prefix data, if any.
                 # TODO: Also return the prefix
-                image = image[:,prefix_cols:]
+                image = image[:, prefix_cols:]
         else:
             image = image.reshape(BANDS, nrows, ncols)
     finally:
         f.close()
+    print('Displaying an image')
     plt.figure(figsize=(4, 4))
     plt.title(filename.split("/")[-1])
     plt.xticks([])
@@ -613,7 +621,7 @@ class data:
                 # print('DAT_PDS4',type(data))
         else:
             # Try PDS3 options
-            setattr(self, "LABEL", parse_label(filename,full=True))
+            setattr(self, "LABEL", parse_label(filename, full=True))
             label = parse_label(filename)
             try:
                 pointers = [k for k in label.keys() if k[0] is "^"]
