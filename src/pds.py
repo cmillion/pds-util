@@ -314,7 +314,7 @@ def read_image(filename):  # ^IMAGE
     else:
         print("*** IMG w/ old format attached label not currently supported.")
         print("\t{fn}".format(fn=filename))
-        return None, None
+        return None
     fmt = "{endian}{pixels}{fmt}".format(endian=DTYPE[0], pixels=pixels, fmt=DTYPE[-1])
     try:  # a little decision tree to seamlessly deal with compression
         if filename.endswith(".gz"):
@@ -323,7 +323,8 @@ def read_image(filename):  # ^IMAGE
             f = bz2.BZ2File(filename, "rb")
         elif filename.endswith(".ZIP"):
             f = ZipFile(filename, "r").open(
-                ZipFile(filename, "r").infolist()[0].filename)
+                ZipFile(filename, "r").infolist()[0].filename
+            )
         else:
             f = open(filename, "rb")
         f.seek(data_start_byte(label, "^IMAGE"))
@@ -339,7 +340,7 @@ def read_image(filename):  # ^IMAGE
             image = image.reshape(BANDS, nrows, ncols)
     finally:
         f.close()
-    print('Displaying an image')
+    print("Displaying an image")
     plt.figure(figsize=(4, 4))
     plt.title(filename.split("/")[-1])
     plt.xticks([])
@@ -653,7 +654,10 @@ class data:
 class read:
     def __init__(self, filename):
         self.filename = filename
-        self.data = data(filename)
+        if filename.endswith(".JP2"):
+            print("*** JP2 not yet supported. ***")
+        else:
+            self.data = data(filename)
 
 
 class io:
