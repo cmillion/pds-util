@@ -223,7 +223,7 @@ def sample_types(SAMPLE_TYPE, SAMPLE_BYTES):
         "INTEGER": ">h",
         "MAC_INTEGER": ">h",
         "SUN_INTEGER": ">h",
-        "MSB_UNSIGNED_INTEGER": ">h" if SAMPLE_BYTES ==2 else ">B",
+        "MSB_UNSIGNED_INTEGER": ">h" if SAMPLE_BYTES == 2 else ">B",
         "UNSIGNED_INTEGER": ">B",
         "MAC_UNSIGNED_INTEGER": ">B",
         "SUN_UNSIGNED_INTEGER": ">B",
@@ -284,7 +284,7 @@ def data_start_byte(label, pointer):
         raise
 
 
-def read_image(filename):  # ^IMAGE
+def read_image(filename, pointer="IMAGE"):  # ^IMAGE
     """ Read a PDS IMG formatted file into an array.
     TODO: Check for and account for LINE_PREFIX.
     TODO: Check for and apply BIT_MASK.
@@ -329,6 +329,9 @@ def read_image(filename):  # ^IMAGE
             if prefix_cols:
                 # Ignore the prefix data, if any.
                 # TODO: Also return the prefix
+                prefix = image[:, :prefix_cols]
+                if pointer == "LINE_PREFIX_TABLE":
+                    return prefix
                 image = image[:, prefix_cols:]
         else:
             image = image.reshape(BANDS, nrows, ncols)
@@ -394,8 +397,7 @@ def read_bad_data_values_header(filename):  # ^BAD_DATA_VALUES_HEADER
 
 
 def read_line_prefix_table(filename):
-    print("*** LINE_PREFIX_TABLE is TBD. ***")
-    return
+    return read_image(filename, pointer="LINE_PREFIX_TABLE")
 
 
 def read_histogram(filename):  # ^HISTOGRAM
@@ -412,44 +414,52 @@ def read_histogram(filename):  # ^HISTOGRAM
         )
     return histogram
 
-def parse_table_structure(filename,pointer='TABLE'):
+
+def parse_table_structure(filename, pointer="TABLE"):
     # Try to turn the TABLE definition into a column name / data type array.
     # Requires renaming some columns to maintain uniqueness.
     # Also requires unpacking columns that contain multiple entries.
     label = parse_label(filename)
-    dt = [] 
-    for i in range(len(label[pointer].keys())): 
-        obj = label[pointer][i] 
-        if obj[0] == 'COLUMN':
-            if obj[1]['NAME'] == 'RESERVED':
-                name = 'RESERVED_'+str(obj[1]['START_BYTE'])
+    dt = []
+    for i in range(len(label[pointer].keys())):
+        obj = label[pointer][i]
+        if obj[0] == "COLUMN":
+            if obj[1]["NAME"] == "RESERVED":
+                name = "RESERVED_" + str(obj[1]["START_BYTE"])
             else:
-                name = obj[1]['NAME']
-            try: # Some "columns" contain a lot of columns 
-                for n in range(obj[1]['ITEMS']): 
-                    dt+=[(f'{name}_{n}', 
-                        sample_types(obj[1]['DATA_TYPE'], 
-                                     obj[1]['ITEM_BYTES']))] 
+                name = obj[1]["NAME"]
+            try:  # Some "columns" contain a lot of columns
+                for n in range(obj[1]["ITEMS"]):
+                    dt += [
+                        (
+                            f"{name}_{n}",
+                            sample_types(obj[1]["DATA_TYPE"], obj[1]["ITEM_BYTES"]),
+                        )
+                    ]
             except KeyError:
-                dt+=[(name,
-                    sample_types(obj[1]['DATA_TYPE'],
-                                 obj[1]['BYTES']))] 
+                dt += [(name, sample_types(obj[1]["DATA_TYPE"], obj[1]["BYTES"]))]
     return np.dtype(dt)
 
-def read_table(filename,pointer='TABLE'):  # ^TABLE
+
+def read_table(filename, pointer="TABLE"):  # ^TABLE
     label = parse_label(filename)
-    dt = parse_table_structure(filename,pointer)
-    return pd.DataFrame(np.fromfile(filename,dtype=dt,
-                offset=data_start_byte(label,f'^{pointer}'),
-                count=label[pointer]['ROWS']))
+    dt = parse_table_structure(filename, pointer)
+    return pd.DataFrame(
+        np.fromfile(
+            filename,
+            dtype=dt,
+            offset=data_start_byte(label, f"^{pointer}"),
+            count=label[pointer]["ROWS"],
+        )
+    )
 
 
 def read_engineering_table(filename):  # ^ENGINEERING_TABLE
-    return read_table(filename,pointer='ENGINEERING_TABLE')
+    return read_table(filename, pointer="ENGINEERING_TABLE")
 
 
 def read_measurement_table(filename):  # ^MEASUREMENT_TABLE
-    return read_table(filename,pointer='MEASUREMENT_TABLE')
+    return read_table(filename, pointer="MEASUREMENT_TABLE")
 
 
 def read_spectrum(filename):  # ^SPECTRUM
