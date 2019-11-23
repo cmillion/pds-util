@@ -5,6 +5,7 @@ import os
 import sys
 from collections import OrderedDict
 from astropy.io import fits as pyfits
+import pandas as pd
 
 import struct
 import pvl
@@ -216,28 +217,20 @@ def sample_types(SAMPLE_TYPE, SAMPLE_BYTES):
     TODO: The commented-out types below are technically valid PDS3
         types, but I haven't yet worked out the translation to Python.
     """
-    if SAMPLE_TYPE == "LSB_INTEGER":  # inconsistently defined in PDS3
-        if SAMPLE_BYTES == 1:
-            return "<B"
-        elif SAMPLE_BYTES == 2:
-            return "<H"
-        else:
-            raise  # WTF: SAMPLE_TYPE + SAMPLE_BYTES
+    # NOTE: The byte depth of various data types is non-unique in PDS3
     return {
         "MSB_INTEGER": ">h",
         "INTEGER": ">h",
         "MAC_INTEGER": ">h",
         "SUN_INTEGER": ">h",
-        "MSB_UNSIGNED_INTEGER": ">B",
+        "MSB_UNSIGNED_INTEGER": ">h" if SAMPLE_BYTES ==2 else ">B",
         "UNSIGNED_INTEGER": ">B",
         "MAC_UNSIGNED_INTEGER": ">B",
         "SUN_UNSIGNED_INTEGER": ">B",
-        # LSB_INTEGER is defined both ways in the PDS!
-        # "LSB_INTEGER": "<h",
-        # "LSB_INTEGER": "<B",
+        "LSB_INTEGER": "<h" if SAMPLE_BYTES == 2 else "<B",
         "PC_INTEGER": "<h",
         "VAX_INTEGER": "<h",
-        "LSB_UNSIGNED_INTEGER": "<B",
+        "LSB_UNSIGNED_INTEGER": "<h" if SAMPLE_BYTES == 2 else "<B",
         "PC_UNSIGNED_INTEGER": "<B",
         "VAX_UNSIGNED_INTEGER": "<B",
         "IEEE_REAL": ">f",
@@ -409,29 +402,54 @@ def read_histogram(filename):  # ^HISTOGRAM
     label = parse_label(filename)
     DTYPE = sample_types(label["HISTOGRAM"]["DATA_TYPE"], 0)
     if label["HISTOGRAM"]["ITEM_BYTES"] == 4:
-        DTYPE = DTYPE[0] + "i"  # because why would the type
-        # definitions be consistent?
+        DTYPE = DTYPE[0] + "i"
     items = label["HISTOGRAM"]["ITEMS"]
+    fmt = "{endian}{items}{fmt}".format(endian=DTYPE[0], items=items, fmt=DTYPE[-1])
     with open(filename, "rb") as f:
-        fmt = "{endian}{items}{fmt}".format(endian=DTYPE[0], items=items, fmt=DTYPE[-1])
         f.seek(data_start_byte(label, "^HISTOGRAM"))
         histogram = np.array(
             struct.unpack(fmt, f.read(items * label["HISTOGRAM"]["ITEM_BYTES"]))
         )
     return histogram
 
+def parse_table_structure(filename,pointer='TABLE'):
+    # Try to turn the TABLE definition into a column name / data type array.
+    # Requires renaming some columns to maintain uniqueness.
+    # Also requires unpacking columns that contain multiple entries.
+    label = parse_label(filename)
+    dt = [] 
+    for i in range(len(label[pointer].keys())): 
+        obj = label[pointer][i] 
+        if obj[0] == 'COLUMN':
+            if obj[1]['NAME'] == 'RESERVED':
+                name = 'RESERVED_'+str(obj[1]['START_BYTE'])
+            else:
+                name = obj[1]['NAME']
+            try: # Some "columns" contain a lot of columns 
+                for n in range(obj[1]['ITEMS']): 
+                    dt+=[(f'{name}_{n}', 
+                        sample_types(obj[1]['DATA_TYPE'], 
+                                     obj[1]['ITEM_BYTES']))] 
+            except KeyError:
+                dt+=[(name,
+                    sample_types(obj[1]['DATA_TYPE'],
+                                 obj[1]['BYTES']))] 
+    return np.dtype(dt)
 
-def read_table(filename):  # ^TABLE
-    print("*** TABLE data not yet supported. ***")
-    return
+def read_table(filename,pointer='TABLE'):  # ^TABLE
+    label = parse_label(filename)
+    dt = parse_table_structure(filename,pointer)
+    return pd.DataFrame(np.fromfile(filename,dtype=dt,
+                offset=data_start_byte(label,f'^{pointer}'),
+                count=label[pointer]['ROWS']))
 
 
 def read_engineering_table(filename):  # ^ENGINEERING_TABLE
-    return read_table(filename)
+    return read_table(filename,pointer='ENGINEERING_TABLE')
 
 
 def read_measurement_table(filename):  # ^MEASUREMENT_TABLE
-    return read_table(filename)
+    return read_table(filename,pointer='MEASUREMENT_TABLE')
 
 
 def read_spectrum(filename):  # ^SPECTRUM
