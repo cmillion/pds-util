@@ -186,10 +186,11 @@ def parse_label(filename, full=False):
     """
     if not has_attached_label(filename):
         if os.path.exists(filename[: filename.rfind(".")] + ".LBL"):
-            label = pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".LBL"))
+            label = pvl.load(filename[: filename.rfind(".")] + ".LBL")
         elif os.path.exists(filename[: filename.rfind(".")] + ".lbl"):
-            label = pvl_to_dict(pvl.load(filename[: filename.rfind(".")] + ".lbl"))
+            label = pvl.load(filename[: filename.rfind(".")] + ".lbl")
         elif os.path.exists(filename[: filename.rfind(".")] + ".xml"):
+            # TODO: Make label data format consistent between PDS3 & 4
             label = pds4_tools.read(
                 filename[: filename.rfind(".")] + ".xml", quiet=True
             ).label.to_dict()
@@ -362,7 +363,7 @@ def read_image_header(filename):  # ^IMAGE_HEADER
     try:
         with open(filename, "rb") as f:
             f.seek(data_start_byte(label, "^IMAGE_HEADER"))
-            image_header = pvl_to_dict(pvl.load(f.read(label["IMAGE_HEADER"]["BYTES"])))
+            image_header = pvl.load(f.read(label["IMAGE_HEADER"]["BYTES"]))
         return image_header
     except:
         print("*** Unable to parse image header. ***")
@@ -696,12 +697,10 @@ def download_test_data(ndata, testdir="../src/test", refdatafile="refdata.csv"):
     return
 
 
-def test_io(
-    ndata, testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")
-):
-    for i, url in enumerate(refdata["url"][:ndata]):
-        print(i)
-        filename = url_to_path(url)
-        if not os.path.exists(filename):
-            _ = download_data_and_label(url)
-        read(filename)
+def test_io(n, testdir="../src/test", refdata=pd.read_csv("refdata.csv", comment="#")):
+    url = refdata["url"][n]
+    print(url)
+    filename = url_to_path(url)
+    if not os.path.exists(filename):
+        _ = download_data_and_label(url)
+    return read(filename)
