@@ -1,0 +1,711 @@
+OBJECT        = COLUMN
+   NAME             = STEP_NUMBER
+   COLUMN_NUMBER    = 1
+   BYTES            = 2
+   DATA_TYPE        = MSB_UNSIGNED_INTEGER
+   START_BYTE       = 1
+   DESCRIPTION    = "Step in the observation. PER STEP column."
+END_OBJECT    = COLUMN
+
+/* SPICE DERIVED GEOMETRY VALUES */
+
+OBJECT        = COLUMN
+   NAME             = PLANET_SUN_VECTOR_TG
+   COLUMN_NUMBER    = 2
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived (x,y,z) vector giving center-to-center planet-
+   sun position in target body-fixed coordinate system. Unit = kilometers. 
+   PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PLANET_SC_VECTOR_TG 
+   COLUMN_NUMBER    = 3
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 27
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived (x,y,z) vector giving center-to-center planet-
+   spacecraft position in target body-fixed coordinate system. 
+   Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = BORESIGHT_UNIT_VECTOR_CENTER_TG
+   COLUMN_NUMBER    = 4
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 51
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived (x,y,z) vector giving look direction of MASCS 
+   UVVS center in target body-fixed coordinate system. Unit = N/A. PER STEP 
+   column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = BORESIGHT_UNIT_VECTOR_C1_TG
+   COLUMN_NUMBER    = 5
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 75
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived (x,y,z) vector giving look direction of MASCS 
+   UVVS corner 1 in target body-fixed coordinate system. Unit = N/A. PER 
+   STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = BORESIGHT_UNIT_VECTOR_C2_TG
+   COLUMN_NUMBER    = 6
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 99
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived (x,y,z) vector giving look direction of MASCS 
+   UVVS corner 2 in target body-fixed coordinate system. Unit = N/A. PER 
+   STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = BORESIGHT_UNIT_VECTOR_C3_TG
+   COLUMN_NUMBER    = 7
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 123
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived (x,y,z) vector giving look direction of MASCS 
+   UVVS corner 3 in target body-fixed coordinate system. Unit = N/A. PER 
+   STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = BORESIGHT_UNIT_VECTOR_C4_TG
+   COLUMN_NUMBER    = 8
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 147
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived (x,y,z) vector giving look direction of MASCS 
+   UVVS corner 4 in target body-fixed coordinate system. Unit = N/A. PER 
+   STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SURFACE_TANGENT_VECTOR_CENTER 
+   COLUMN_NUMBER    = 9
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 171
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Vector from center of target planet through tangent 
+   line (a radial line which intersects the boresight look direction at a 90 
+   deg. angle) to the planet surface, with a magnitude equal to the planet 
+   radius, UVVS Center. In target body-fixed coordinate system. 
+   Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SURFACE_TANGENT_VECTOR_C1
+   COLUMN_NUMBER    = 10
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 195
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Vector from center of target planet through tangent 
+   line (a radial line which intersects the boresight look direction at a 90 
+   deg. angle) to the planet surface, with a magnitude equal to the planet 
+   radius, UVVS Corner 1. In target body-fixed coordinate system. 
+   Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SURFACE_TANGENT_VECTOR_C2
+   COLUMN_NUMBER    = 11
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 219
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Vector from center of target planet through tangent 
+   line (a radial line which intersects the boresight look direction at a 90 
+   deg. angle) to the planet surface, with a magnitude equal to the planet 
+   radius, UVVS Corner 2. In target body-fixed coordinate system. 
+   Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SURFACE_TANGENT_VECTOR_C3
+   COLUMN_NUMBER    = 12
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 243
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Vector from center of target planet through tangent 
+   line (a radial line which intersects the boresight look direction at a 90 
+   deg. angle) to the planet surface, with a magnitude equal to the planet 
+   radius, UVVS Corner 3. In target body-fixed coordinate system. 
+   Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SURFACE_TANGENT_VECTOR_C4 
+   COLUMN_NUMBER    = 13
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 267
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Vector from center of target planet through tangent 
+   line (a radial line which intersects the boresight look direction at a 90 
+   deg. angle) to the planet surface, with a magnitude equal to the planet 
+   radius, UVVS Corner 4. In target body-fixed coordinate system. 
+   Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = RA_SET
+   COLUMN_NUMBER    = 14
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 291
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Right ascension of UVVS footprint center, and 4 
+   corners - 5 total values. Format: (center, corner 1, corner 2, corner 3, 
+   corner 4). Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = DEC_SET
+   COLUMN_NUMBER    = 15
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 331
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Declination of UVVS footprint center, and 4 
+   corners - 5 total values. Format: (center, corner 1, corner 2, corner 3, 
+   corner 4). Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LATITUDE_SET
+   COLUMN_NUMBER    = 16
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 371
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "For exosphere observations, this indicates the 
+   latitudes below the tangent points of the UVVS field-of-view center and 
+   corners. For surface observations, this indicates the latitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4). 
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LONGITUDE_SET  
+   COLUMN_NUMBER    = 17
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 411
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "For exosphere observations, this indicates the 
+   longitudes below the tangent points of the UVVS field-of-view center and 
+   corners. For surface observations, this indicates the longitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4).  
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_ALTITUDE_SET
+   COLUMN_NUMBER    = 18
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 451
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "For exosphere observations, this indicates the 
+   altitudes of the actual field-of-view center and corner tangent points 
+   above the surface along a radial line.  For surface observations, these 
+   altitudes have a value of 0. Format: (center, corner 1, corner 2, 
+   corner 3, corner 4). Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SLIT_ROTATION_ANGLE
+   COLUMN_NUMBER    = 19
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 491
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Angle of long dimension of the slit with the surface
+   tangent line. Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = ALONG_TRACK_FOOTPRINT_SIZE
+   COLUMN_NUMBER    = 20
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 499
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived length of UVVS footprint along track, 
+   accounting for smear across surface. Unit = meters. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = ACROSS_TRACK_FOOTPRINT_SIZE
+   COLUMN_NUMBER    = 21
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 507
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived width of UVVS footprint across track, 
+   accounting for jitter across surface. Unit = meters. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = FOOTPRINT_AZIMUTH
+   COLUMN_NUMBER    = 22
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 515
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived angle of footprint smear relative to a N-S 
+   line. 0 is North, plus/minus 180 is South, sign denotes east (clockwise) 
+   or west rotation of azimuth from North. Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = INCIDENCE_ANGLE
+   COLUMN_NUMBER    = 23
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 523
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived solar incidence angle of footprint center. 
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = EMISSION_ANGLE
+   COLUMN_NUMBER    = 24
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 531
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived emission angle of footprint center. 
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PHASE_ANGLE
+   COLUMN_NUMBER    = 25
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 539
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived phase angle of footprint center. 
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SLANT_RANGE_TO_CENTER
+   COLUMN_NUMBER    = 26
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 547
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived slant range from s/c to footprint center (equal 
+   to s/c NADIR_ALTITUDE in nadir pointing case). Unit = kilometers. PER 
+   STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSPACECRAFT_LATITUDE
+   COLUMN_NUMBER    = 27
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 555
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived subspacecraft latitude on planet surface. 
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSPACECRAFT_LONGITUDE
+   COLUMN_NUMBER    = 28
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 563
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived subspacecraft longitude on planet surface. 
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = NADIR_ALTITUDE
+   COLUMN_NUMBER    = 29
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 571
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived spacecraft altitude above nadir point.
+   Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSOLAR_LATITUDE
+   COLUMN_NUMBER    = 30
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 579
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived subsolar latitude on planet surface.
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSOLAR_LONGITUDE
+   COLUMN_NUMBER    = 31
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 587
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived subsolar longitude on planet surface. 
+   Unit = degrees. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SOLAR_DISTANCE
+   COLUMN_NUMBER    = 32
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 595
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived subsolar distance to footprint center on planet
+   surface. Unit = kilometers. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PLANET_TRUE_ANOMALY
+   COLUMN_NUMBER    = 33
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 603
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived true anomaly of planet. Unit = degrees. 
+   PER STEP column."
+END_OBJECT    = COLUMN
+
+/* CALIBRATED ITEMS AND ADDITIONAL METADATA */
+
+OBJECT        = COLUMN
+   NAME           = MIDSTEP_TIME
+   COLUMN_NUMBER  = 34
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 611
+   DESCRIPTION    = "A calculated value indicating the mission elapsed
+   time since launch at the middle of an individual UVVS step. 
+   Unit = seconds. This is a double precision value. The formula used is:
+   MIDSTEP_TIME = (N-1)*(INT_TIME+STEP_TIME)/3000 + SC_TIME + 
+                   PACKET_SUBSECONDS*5/1000 + (INT_TIME/3000)/2 
+   where N is the Nth step in an observation sequence, and the other values
+   are contained in the UVVS Science Header CDR. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_UTC_TIME
+   COLUMN_NUMBER  = 35
+   BYTES          = 17
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 619
+   DESCRIPTION    = "UTC time in YYDOYTHH:MM:SS.00 format derived from the
+   MIDSTEP_TIME using SPICE kernels. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = GRATING_OFFSET
+   COLUMN_NUMBER  = 36
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 636
+   DESCRIPTION    = "Number of grating steps offset from nominal as noted in 
+   GRATING_OFFSET.TAB, located in the CALIB directory. A correction for this 
+   was implemented in PDS delivery 16. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_POSITION
+   COLUMN_NUMBER  = 37
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 640
+   DESCRIPTION    = "Actual grating position calculated by start position + 
+   (step number * step size) + offset. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_WAVELENGTH
+   COLUMN_NUMBER  = 38
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 644
+   DESCRIPTION    = "From wavelength equation. Unit = nanometers. PER STEP 
+   column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = RAW_STEP_DATA
+   COLUMN_NUMBER  = 39
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 648
+   DESCRIPTION    = "Column of uncompressed raw data. Unit = counts. PER STEP 
+   column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = COUNT_RATE
+   COLUMN_NUMBER  = 40
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 650
+   DESCRIPTION    = "Count rate of step. Unit = counts/second. PER STEP 
+   column." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = DEAD_CORRECTED_COUNT_RATE
+   COLUMN_NUMBER  = 41
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 654
+   DESCRIPTION    = "Count rate corrected for nonlinearity due to dead-time.
+   Unit = counts/second. PER STEP column." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = DARK_RATE
+   COLUMN_NUMBER  = 42
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 658
+   DESCRIPTION    = "Dark count rate at step from model/module. 
+   Unit = counts/second. PER STEP column." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SCATTERED_LIGHT_RATE
+   COLUMN_NUMBER  = 43
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 662
+   DESCRIPTION    = "Scattered light at step from model/module. 
+   Unit = counts/second. PER STEP column." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = FULLY_CORRECTED_COUNT_RATE
+   COLUMN_NUMBER  = 44
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 666
+   DESCRIPTION    = "Count rate corrected for dark, scattered light, dead 
+   time, etc. Unit = counts/second. PER STEP column." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = FULLY_CORRECTED_COUNT_RATE_UNCERTAINTY
+   COLUMN_NUMBER  = 45
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 670
+   DESCRIPTION    = "Uncertainty for count rate, equivalent to instrument 
+   shot noise. Unit = counts/second. PER STEP column." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_RADIANCE_KR
+   COLUMN_NUMBER  = 46
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 674
+   DESCRIPTION    = "Calibrated radiance value at step. 
+   Unit = kiloRayleighs/nanometer. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_RADIANCE_W
+   COLUMN_NUMBER  = 47
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 678
+   DESCRIPTION    = "Calibrated radiance value at step.  
+   Unit = W/(m^2 steradian micron). PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_RADIANCE_SIGNAL_TO_NOISE
+   COLUMN_NUMBER  = 48
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 682
+   DESCRIPTION    = "Signal to noise ratio for the step radiance values."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PMT_TEMPERATURE
+   COLUMN_NUMBER  = 49
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 686
+   DESCRIPTION    = "PMT temperature in degrees C."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = DATA_QUALITY_INDEX
+   COLUMN_NUMBER  = 50
+   BYTES          = 21
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 690
+   DESCRIPTION    = "21 character index of data quality. Each digit signifies
+   quality factor of measurements. PER STEP column.
+   Format: A-BCDEF-GHIJ-KLM-NOPQ
+   A: SBOS trip
+     0 = no trip
+     1 = trip
+     9 = Unknown. No information found from MASCS HK EDR for the time period 
+         START_TIME to STOP TIME.
+   B: Footprint center on planet
+     0 = not on planet
+     1 = on planet
+   C: Footprint C1 on planet
+     0 = not on planet
+     1 = on planet
+   D: Footprint C2 on planet
+     0 = not on planet
+     1 = on planet
+   E: Footprint C3 on planet
+     0 = not on planet
+     1 = on planet
+   F: Footprint C4 on planet
+     0 = not on planet
+     1 = on planet
+   G: Partial scan (macro cutoff)
+     0 = No partial scan.
+     1 = Partial scan.
+   H: Temperature 1 flag for this UVVS detector
+     0 = Temperature does not exceed 25 deg C threshold.
+     1 = Temperature exceeds 25 deg C threshold but less than 45 deg C 
+     threshold.
+     2 = Temperature exceeds 45 deg C threshold.
+     9 = Unknown. No information found from MASCS HK EDR for the time period 
+         START_TIME to STOP TIME.
+   I: UVVS noise spike flag
+     0 = No noise spike detected.
+     1 = Noise spike detected.
+   J: VIRS operating flag
+     0 = VIRS is not scanning during readout.
+     1 = VIRS is scanning during readout.
+     9 = Unknown. No information found from MASCS HK EDR for the time period 
+         START_TIME to STOP TIME.
+   K: Buffer overflow flag
+     0 = No buffer overflow.
+     1 = Buffer overflow.
+   L: Background subtraction method
+     # = Method used
+   M: Background quality flag (not yet implemented)
+     0 = Not yet implemented.
+     1 = Inside TBD threshold.
+   N: SPICE Version Epoch. Indicates what SPICE is used to determine pointing
+     fields in CDR. 'Predict' SPICE may change one or more times before 
+     settling on 'Final' pointing solutions about 2 weeks from data
+     acquisition.
+     0 = No SPICE
+     1 = Predict
+     2 = Actual
+   O: Bad data identifier for UVVS. Bad data encompass when a Solar Energetic
+     Particle event interacts with the instrument causing noisy data that
+     should not be used. There are also times when the instrument wavelength
+     fiducial misregisters. The data is compromised when these events happen
+     and should not be used. 
+     0 = Good Data
+     1 = Bad Data
+   P-Q: Spares"
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SC_TIME
+   COLUMN_NUMBER  = 51
+   BYTES          = 4
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 711
+   DESCRIPTION    = "Spacecraft time in integer seconds that is transmitted
+   to the MESSENGER subsystems by the Integrated Electronics Module. This is
+   assigned as the start time of the UVVS observation. A UVVS observation is
+   defined as all the scan data contained within one UVVS science packet.
+   This is due to the highly configurable nature of the instrument, i.e. it
+   can be commanded to take multiple scans over multiple wavelengths. Unit is
+   in mission elapsed time which is the number of seconds since launch. PER 
+   OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = OBSERVATION_TYPE
+   COLUMN_NUMBER  = 52
+   BYTES          = 30
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 715
+   DESCRIPTION    = "Describes the type of observation being executed at this
+   MIDSTEP time. PER STEP column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = ORBIT_NUMBER
+   COLUMN_NUMBER  = 53
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 745
+   DESCRIPTION   = "Orbit number is a unique identifier for a given orbit of
+    the MESSENGER spacecraft around Mercury. Orbit number is defined as
+    starting at apoherm and is calculated using the MIDSTEP_TIME value and
+    appropriate SPICE kernels. Orbit numbering does not start until MESSENGER
+    performs the Mercury orbit insertion. Until that time the value for orbit
+    number is 0."
+END_OBJECT    = COLUMN

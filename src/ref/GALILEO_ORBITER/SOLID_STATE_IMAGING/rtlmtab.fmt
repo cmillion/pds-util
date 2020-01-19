@@ -1,0 +1,833 @@
+OBJECT = COLUMN
+NAME = RECORD_ID
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 1
+BYTES = 1
+DESCRIPTION = "Is always 0 for the telemetry record"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILE_NUMBER
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 2
+BYTES = 1
+DESCRIPTION = "Tape file number. Not applicable for CD-ROMs."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = MISSION_NAME
+DATA_TYPE = CHARACTER
+START_BYTE = 3
+BYTES = 10
+DESCRIPTION = "Mission name, valid is GALILEO."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = INSTRUMENT_ID
+DATA_TYPE = CHARACTER
+START_BYTE = 13
+BYTES = 6
+DESCRIPTION = "Instrument identification, valid is SSI."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = PHYSICAL_SEQUENCE
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 19
+BYTES = 2
+DESCRIPTION = "Tape physical sequence record counter. Not valid for CD-ROMs."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LOGICAL_SEQUENCE
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 21
+BYTES = 2
+DESCRIPTION = "Logical sequence record counter. Always 0 for the telemetry 
+    record"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_EARTH_RECEIVED_TIME_YEAR
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 23
+BYTES = 2
+DESCRIPTION = "Earth received time year of the first record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_EARTH_RECEIVED_TIME_DAY
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 25
+BYTES = 2
+DESCRIPTION = "Earth received time day of the first record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_EARTH_RECEIVED_TIME_HOUR
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 27
+BYTES = 1
+DESCRIPTION = "Earth received time hour of the first record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_EARTH_RECEIVED_TIME_MIN
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 28
+BYTES = 1
+DESCRIPTION = "Earth received time minute of the first record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_EARTH_RECEIVED_TIME_SEC
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 29
+BYTES = 1
+DESCRIPTION = "Earth received time second of the first record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_EARTH_RECEIVED_TIME_MSEC
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 30
+BYTES = 2
+DESCRIPTION = "Earth received time millisecond of the first record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_EARTH_RECEIVED_TIME_YEAR
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 32
+BYTES = 2
+DESCRIPTION = "Earth received time year of the last record containing valid 
+    data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_EARTH_RECEIVED_TIME_DAY
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 34
+BYTES = 2
+DESCRIPTION = "Earth received time day of the last record containing valid 
+    data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_EARTH_RECEIVED_TIME_HOUR
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 36
+BYTES = 1
+DESCRIPTION = "Earth received time hour of the last record containing valid 
+    data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_EARTH_RECEIVED_TIME_MIN
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 37
+BYTES = 1
+DESCRIPTION = "Earth received time minute of the last record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_EARTH_RECEIVED_TIME_SEC
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 38
+BYTES = 1
+DESCRIPTION = "Earth received time second of the last record containing valid 
+    data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_EARTH_RECEIVED_TIME_MSEC
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 39
+BYTES = 2
+DESCRIPTION = "Earth received time millisecond of the last record containing 
+    valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_SPACECRAFT_CLK_CNT_RIM
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 41
+BYTES = 4
+DESCRIPTION = "Spacecraft clock RIM of the first record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_SPACECRAFT_CLK_CNT_MOD91
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 45
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD91 of the first record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_SPACECRAFT_CLK_CNT_MOD10
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 46
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD10 of the first record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FIRST_SPACECRAFT_CLK_CNT_MOD8
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 47
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD8 of the first record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_SPACECRAFT_CLK_CNT_RIM
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 48
+BYTES = 4
+DESCRIPTION = "Spacecraft clock RIM of the last record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_SPACECRAFT_CLK_CNT_MOD91
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 52
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD91 of the last record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_SPACECRAFT_CLK_CNT_MOD10
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 53
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD10 of the last record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LAST_SPACECRAFT_CLK_CNT_MOD8
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 54
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD8 of the last record in the file 
+    containing valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_EVENT_TIME_YEAR
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 55
+BYTES = 2
+DESCRIPTION = "Spacecraft Event Time year at the middle of the shutter-open 
+    period."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_EVENT_TIME_DAY
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 57
+BYTES = 2
+DESCRIPTION = "Spacecraft Event Time day at the middle of the shutter-open 
+    period."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_EVENT_TIME_HOUR
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 59
+BYTES = 1
+DESCRIPTION = "Spacecraft Event Time hour at the middle of the shutter-open 
+    period."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_EVENT_TIME_MIN
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 60
+BYTES = 1
+DESCRIPTION = "Spacecraft Event Time minute at the middle of the shutter-open 
+    period."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_EVENT_TIME_SEC
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 61
+BYTES = 1
+DESCRIPTION = "Spacecraft Event Time second at the middle of the shutter-open 
+    period."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_EVENT_TIME_MSEC
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 62
+BYTES = 2
+DESCRIPTION = "Spacecraft Event Time millisecond at the middle of the 
+    shutter-open period."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = OPERATING_SYSTEM_VERSION
+DATA_TYPE = CHARACTER
+START_BYTE = 64
+BYTES = 8
+DESCRIPTION = "MIPS operating system version number in the form of Vxxx.yyy.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = GENERATING_DEVICE_TYPE
+DATA_TYPE = CHARACTER
+START_BYTE = 72
+BYTES = 6
+DESCRIPTION = "MIPS generating device type; e.g. _MTA0:.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = GENERATING_DEVICE_ID
+DATA_TYPE = CHARACTER
+START_BYTE = 78
+BYTES = 2
+DESCRIPTION = "MIPS generating device id; e.g. A0, A1, etc.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = GENERATING_DEVICE_VOLUME
+DATA_TYPE = CHARACTER
+START_BYTE = 80
+BYTES = 8
+DESCRIPTION = "MIPS generating device tape volume label.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = RESERVED
+DATA_TYPE = CHARACTER
+START_BYTE = 88
+BYTES = 8
+DESCRIPTION = "MIPS physical recording words reserved space.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = VALIDATION_ID
+DATA_TYPE = CHARACTER
+START_BYTE = 96
+BYTES = 2
+DESCRIPTION = "MIPS validation id; e.g. A0, A1, etc.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = COMPUTER_PROCESSING_UNIT
+DATA_TYPE = CHARACTER
+START_BYTE = 98
+BYTES = 8
+DESCRIPTION = "MIPS cpu name; e.g. MIPL1.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = GENERATION_DATE
+DATA_TYPE = CHARACTER
+START_BYTE = 106
+BYTES = 11
+DESCRIPTION = "MIPS generation date in the form DD-MMM-YYYY.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = MIPS_PRD_RESERVED
+DATA_TYPE = CHARACTER
+START_BYTE = 117
+BYTES = 6
+DESCRIPTION = "MIPS physical recording reserved words.
+    Currently not implemented."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FORMAT_ID
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 123
+BYTES = 2
+DESCRIPTION = "The correct format ID for this image as derived from line
+    records by a voting algorithm."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SYNC_CODE_ERRORS
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 125
+BYTES = 4
+DESCRIPTION = "The sum of all bad bits in the sync code contained in all 
+    the line records in the file which contain valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = BOOM_OBSCURATION_FLAG
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 129
+BYTES = 1
+DESCRIPTION = "Boom obscuration flag. 0:Boom present; 1:Boom may be present;
+    2:Boom not present."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = MISSING_LINES
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 130
+BYTES = 2
+DESCRIPTION = "Number of line records in the file with no valid pixels in 
+    the raw version of the image."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = PARTIAL_LINES
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 132
+BYTES = 2
+DESCRIPTION = "Total number of line records in the file which contain some 
+    valid pixels."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = UNREADABLE_LINES
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 134
+BYTES = 2
+DESCRIPTION = "Total number of records from the IDR and/or SDR which were 
+    unreadable and which fell within a time period for which data was 
+    required for this file."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SEQUENCE_BREAKS
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 136
+BYTES = 2
+DESCRIPTION = "Total number of IDR/SDR gaps (indicated by a discontinuity 
+    in the logical record numbers) which occurred during the time data was 
+    required for this file."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SOURCE_INPUT
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 138
+BYTES = 2
+DESCRIPTION = "Logical sum of all source/input line records with valid data."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = WIDE_BAND_DATA_LINK_FRAMES
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 140
+BYTES = 2
+DESCRIPTION = "Total number of minor frames in this file which were derived 
+    from WBDL input."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SYSTEM_DATA_RECORD_FRAMES
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 142
+BYTES = 2
+DESCRIPTION = "Total number of minor frames in this file which were derived 
+    from SDR input."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = STANDARD_FRMTD_DTA_UNT_FRMS
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 144
+BYTES = 2
+DESCRIPTION = "Total number of minor frames in this file which were derived 
+    from SFDU input."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = PICTURE_NUMBER
+DATA_TYPE = CHARACTER
+START_BYTE = 146
+BYTES = 7
+DESCRIPTION = "Picture number of the form XXYZZZZ where XX is the orbit,
+    (A1, A2 etc. is approach; C1, C2 is cruise).  Y is the target body 
+    id (J=Jupiter, A=Amalthea, I=Io, E=Europa, G=Ganymede, C=Callisto,
+    S=Minor Satellites, R=ring, H=star, L=Moon, W=Earth, V=Venus, U=Ida,
+    P=Gaspra) and ZZZZ is the picture count which is generated in the
+    sequence generation process and which is incremented separately for
+    each target body in each orbit."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SSI_LOW_RATE_SCIENCE_PACKET
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 153
+BYTES = 1
+ITEMS = 12
+DESCRIPTION = "First SSI low rate science packet during this image."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FLAGS
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 165
+BYTES = 2
+
+ OBJECT = BIT_COLUMN
+ NAME = COMPRESSED_IMAGING_FORMAT_FLAG
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 1
+ BITS = 1
+ DESCRIPTION = "Indicator of a compressed imaging format: 0 - Not 
+     compressed; 1 = Compressed."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = COMPRESSION_MODE_FLAG
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 2
+ BITS = 1
+ DESCRIPTION = "Compression mode: 0 - rate control; 1 - information 
+     preserving"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = EXPOSURE_MODE_FLAG
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 3
+ BITS = 1
+ DESCRIPTION = "Exposure modes: 0 - normal; 1 - extended exposure."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = LIGHT_FLOOD_FLAG
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 4
+ BITS = 1
+ DESCRIPTION = "Light flood status: 0 - off; 1 - on."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = BLEMISH_PROTECTION_FLAG
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 5
+ BITS = 1
+ DESCRIPTION = "Blemish protection: 0 - off; 1 - on."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = PARALLEL_CLOCK_FLAG
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 6
+ BITS = 1
+ DESCRIPTION = "Parallel clock state: 0 - normal; 1 - inverted."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = RESERVED
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 7
+ BITS = 1
+ ITEMS = 10
+ DESCRIPTION = "Ten bits to fill VAX short"
+ END_OBJECT
+
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = MEAN_DATA_NUMBER
+DATA_TYPE = CHARACTER
+START_BYTE = 167
+BYTES = 6
+DESCRIPTION = "Mean DN level of all valid pixels.  A real number represented
+     as an ASCII string in the form 123.45."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = TRUNCATED_BITS_PER_PIXEL
+DATA_TYPE = CHARACTER
+START_BYTE = 173
+BYTES = 6
+DESCRIPTION = "Mean number of truncated bits/pixel during data compression.
+     Real number represented as an ASCII string in the form 12.345."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = TRUNCATED_PIXELS_PER_LINE
+DATA_TYPE = CHARACTER
+START_BYTE = 179
+BYTES = 6
+DESCRIPTION = "Mean number of truncated pixels/line during data compression.
+     A real number represented as an ASCII string in the form 12.345."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = CHARACTER
+START_BYTE = 185
+BYTES = 12
+DESCRIPTION = "Filler."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = ENTROPY
+DATA_TYPE = CHARACTER
+START_BYTE = 197
+BYTES = 7
+DESCRIPTION = "Entropy level for the whole picture (bits/pixel). Real number 
+    represented as an ASCII string in the form 12.3456."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = ENTROPIES
+DATA_TYPE = CHARACTER
+START_BYTE = 204
+BYTES = 7
+ITEMS = 15
+DESCRIPTION = "Entropy level for 15 lines. First line is 50 and incremented
+    by 50 to line 750.  15 real numbers represented as ASCII strings in the 
+    form 12.3456."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = RIGHT_ASCENSION
+DATA_TYPE = CHARACTER
+START_BYTE = 309
+BYTES = 8
+DESCRIPTION = "Scan platform coordinate at direction middle of shutter-open
+    period in J2000.  Right ascension.  A real number represented as an 
+    ASCII string in the form 1234.567."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = DECLINATION
+DATA_TYPE = CHARACTER
+START_BYTE = 317
+BYTES = 8
+DESCRIPTION = "Scan platform coordinate at direction middle of shutter-open 
+    period in J2000.  Declination.  A real number represented as an ASCII
+    string in the form 1234.567. "
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = TWIST_ANGLE
+DATA_TYPE = CHARACTER
+START_BYTE = 325
+BYTES = 8
+DESCRIPTION = "Scan platform coordinate at direction middle of shutter-open 
+    period in J2000.  Twist angle.  A real number represented as an ASCII
+    string in the form 1234.567."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = CHARACTER
+START_BYTE = 333
+BYTES = 16
+DESCRIPTION = "Filler."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = CHARACTER
+START_BYTE = 349
+BYTES = 32
+DESCRIPTION = "Filler."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = CHARACTER
+START_BYTE = 381
+BYTES = 32
+DESCRIPTION = "Filler."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = ACTIVITY_ID
+DATA_TYPE = CHARACTER
+START_BYTE = 413
+BYTES = 20
+DESCRIPTION = "Activity id in the form NNTIOOOOOOMM#SSSXXXX where NN is
+    the orbit number, T is the target body initial, I is the instrument, 
+    OOOOOO is the orbit planning guide objective mnemonic, MM is the 
+    sequential OAPEL number, # is multiple observation flag symbol 
+    (- or *), SSS is the PA set number and XXXX is the MIPL processing 
+    code."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = INTEGER
+START_BYTE = 433
+BYTES = 1
+DESCRIPTION = "Filler."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILTER_NUMBER
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 434
+BYTES = 1
+DESCRIPTION = "Filter number: 0 - clear; 1 - green; 2 - red;
+    3 - violet; 4 - IR7560; 5 - IR9680; 6 - IR7270; 7 - IR8890." 
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = EXPOSURE_NUMBER
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 435
+BYTES = 1
+DESCRIPTION = "Exposure number which corresponds to an exposure time."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = IMAGING_MODE
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 436
+BYTES = 1
+DESCRIPTION = "Imaging mode. 0:60-2/3 sec.; 1:8-2/3 sec.; 2:30-1/3 sec.;
+    3:2-1/3 sec."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = GAIN_MODE_ID
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 437
+BYTES = 1
+DESCRIPTION = "Gain mode. 0:Gain 1 - 400K; 1:Gain 2 - 100K; 2:Gain 3 - 40K;
+    3:Gain 4 - 10K."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SOLAR_DISTANCE
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 438
+BYTES = 4
+DESCRIPTION = "Target's range to sun in kilometers."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = TELEMETRY_FORMAT_ID
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 442
+BYTES = 1
+DESCRIPTION = "Telemetry format number."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = CATALOG_VERSION
+DATA_TYPE = LSB_INTEGER
+START_BYTE = 443
+BYTES = 2
+DESCRIPTION = "MIPS catalog image version number.  Reserved for MIPS"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = STARTING_SC_CLK_CNT_RIM
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 445
+BYTES = 4
+DESCRIPTION = "Spacecraft clock RIM of the start of image which refers 
+    to the start of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = STARTING_SC_CLK_CNT_MOD91
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 449
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD91 of the start of image which refers 
+    to the start of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = STARTING_SC_CLK_CNT_MOD10
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 450
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD10 of the start of image which refers 
+    to the start of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = STARTING_SC_CLK_CNT_MOD8
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 451
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD8 of the start of image which refers 
+    to the start of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = ENDING_SC_CLK_CNT_RIM
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 452
+BYTES = 4
+DESCRIPTION = "Spacecraft clock RIM at the end of image which refers 
+    to the end of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = ENDING_SC_CLK_CNT_MOD91
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 456
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD91 of the end of image which refers 
+    to the end of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = ENDING_SC_CLK_CNT_MOD10
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 457
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD10 of the end of image which refers 
+    to the end of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = ENDING_SC_CLK_CNT_MOD8
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 458
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD8 of the end of image which refers 
+    to the end of the SSI frame cycle. May not be available."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = RESERVED
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 459
+BYTES = 1
+ITEMS = 318
+DESCRIPTION = "Reserved words"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = HISTOGRAM
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 777
+BYTES = 4
+ITEMS = 256
+DESCRIPTION = "256 32-bit binary valued histogram of the pixels for this 
+    file, including fill data."
+END_OBJECT

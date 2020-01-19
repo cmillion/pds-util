@@ -1,0 +1,757 @@
+/* FIELDS OBTAINED FROM EXPERIMENT DATA RECORD (EDR) */
+OBJECT        = COLUMN
+   NAME           = SEQ_COUNTER
+   COLUMN_NUMBER  = 1
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 1
+   DESCRIPTION    = "CCSDS packet sequence counter. PACKET column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SC_TIME
+   COLUMN_NUMBER  = 2
+   BYTES          = 4
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 3
+   DESCRIPTION    = "Spacecraft time in integer seconds that is transmitted 
+   to MESSENGER subsystems by the Integrated Electronics Module. This is 
+   assigned to the first spectral observation contained in a science packet. 
+   All spectra contained in the science packet will be associated with this 
+   start time. Unit is in Mission Elapsed Time which is the number of 
+   seconds since launch. PACKET column."  
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PACKET_SUBSECONDS
+   COLUMN_NUMBER  = 3
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 7
+   DESCRIPTION    = "Subsecond time in milliseconds that the telemetry 
+   packet was initiated. All spectra contained in the science packet will 
+   be associated with this subsecond start time. Unit is 5 milliseconds 
+   (i.e. all values will be to the nearest 5 milliseconds). PACKET column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = INT_TIME
+   COLUMN_NUMBER  = 4
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 9
+   DESCRIPTION    = "Amount of time the array detectors will integrate 
+   photon counts. Unit is 0.05 second. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = INT_COUNT
+   COLUMN_NUMBER  = 5
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 11
+   DESCRIPTION    = "Total amount of integrations that will be taken.
+   OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PERIOD
+   COLUMN_NUMBER  = 6
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 13
+   DESCRIPTION    = "Interval time after which another integration will be
+   started.  Integrations are started at the top of every period.  Unit is
+   0.05 second. There is a 5-unit overhead between consecutive integrations,
+   so PERIOD (in units) = INT_TIME (in units) + 5. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = DARK_FREQ
+   COLUMN_NUMBER  = 7
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 15
+   DESCRIPTION    = "Dark counts will be collected every X integrations 
+   during a VIRS observation. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = TEMP_1
+   COLUMN_NUMBER  = 8
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 17
+   DESCRIPTION    = "One of a redundant pair of array temperature sensors. A
+   more complete description of this field can be found in the MASCS User's 
+   Guide (Applicable Document 6 in VIRS_CDR_DDR_DAP_SIS.PDF). 
+   Conversion from raw counts (DN) to degrees Celsius is:
+   TEMP_1 = -3.34338E-18 * DN^5 + 8.979E-15 * DN^4 + 3.8131E-11 * DN^3 
+   - 2.703E-8 * DN^2 - 0.0061 * DN - 1.67826
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = TEMP_2
+   COLUMN_NUMBER  = 9
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 21
+   DESCRIPTION    = "One of a redundant pair of array temperature sensors. A 
+   more complete description of this field can be found in the MASCS User's 
+   Guide (Applicable Document 6 in VIRS_CDR_DDR_DAP_SIS.PDF).
+   Conversion from raw counts (DN) to degrees Celsius is:
+   For the VIS detector it is the same as for TEMP_1
+   For the NIR detector it is:   
+   TEMP_2 = -8.89100589E-18 * DN^5 - 9.72043502E-15 * DN^4 
+   + 1.73862825E-10 * DN^3 + 3.39958815E-7 * DN^2
+   - 0.00702301101 * DN - 22.2879012
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = NIR_GAIN
+   COLUMN_NUMBER  = 10
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 25
+   DESCRIPTION    = "Gain of NIR array detector. A more complete description
+   of this field can be found in the MASCS User's Guide (Applicable Document 
+   6 in VIRS_CDR_DDR_DAP_SIS.PDF). 0 is Low, 1 is High, 999 is N/A value 
+   when VIS detector is enabled. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = OTHER_CHANNEL_ON
+   COLUMN_NUMBER  = 11
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 27
+   DESCRIPTION    = "The other array is powered on or off (VIS in a NIR 
+   packet, NIR in a VIS packet. A value of 0 is off, a value of 1 is on.
+   OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = NIR_LAMP_ON
+   COLUMN_NUMBER  = 12
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 29
+   DESCRIPTION    = "NIR flat field lamp is powered on or off. A value of 0 
+   is off, a value of 1 is on. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = VIS_LAMP_ON
+   COLUMN_NUMBER  = 13
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 31
+   DESCRIPTION    = "VIS flat field lamp is powered on or off. A value of 0 
+   is off, a value of 1 is on. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = BINNING
+   COLUMN_NUMBER  = 14
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 33
+   DESCRIPTION    = "Number of pixels that were binned together in the data.
+   A flight-software update during the mission changed how the pixels are
+   were binned. For data with SPECTRUM_UTC_TIME prior to March 16, 2009,
+   the pixels were co-added. For data with SPECTRUM_UTC_TIME on or after
+   March 16, 2009, the multiple pixels were averaged. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = START_PIXEL
+   COLUMN_NUMBER  = 15
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 35
+   DESCRIPTION    = "Start pixel of data captured by the detector array. For
+   VIS the value can be from 0-511. For NIR the value can be from 0-255.
+   OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = END_PIXEL
+   COLUMN_NUMBER  = 16
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 37
+   DESCRIPTION    = "End pixel of data captured by the detector array. For
+   VIS the value can be from 0-511. For NIR the value can be from 0-255.  
+   The END_PIXEL must be greater than START_PIXEL. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPECTRUM_NUMBER
+   COLUMN_NUMBER  = 17
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 39
+   DESCRIPTION    = "Ordered number sequence for spectra in a given 
+   observation. First spectrum is 0, second is 1, third is 2, and so on. 
+   Note that for observations which span multiple science packets, the 
+   numbering sequence is continuous. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPECTRUM_MET
+   COLUMN_NUMBER  = 18
+   BYTES          = 4
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 41
+   DESCRIPTION    = "A calculated value intended to reflect mission elapsed 
+   time (in seconds) since launch (for partition 1) or since reset (for 
+   partition 2) at the start of an individual VIRS spectrum. 
+   This is derived using the following formula:
+   SPECTRUM_MET = SC_TIME + floor(SPECTRUM_NUMBER*PERIOD*0.050)
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPECTRUM_SUBSECONDS
+   COLUMN_NUMBER  = 19
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 45
+   DESCRIPTION    = "The calculated subsecond time in milliseconds that a
+   VIRS integration was started. For each VIRS integration, SPECTRUM_MET 
+   plus SPECTRUM_SUBSECONDS gives the spacecraft time of the start of that
+   integration. This is derived using the following formula:
+   SPECTRUM_SUBSECONDS = (PACKET_SUBSECONDS + SPECTRUM_NUMBER * PERIOD * 50) 
+   mod 1000 
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = RAW_SPECTRUM_DATA
+   COLUMN_NUMBER  = 20
+   BYTES          = 1024
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 47
+   ITEMS          = 512
+   ITEM_BYTES     = 2
+   DESCRIPTION    = "Column of uncompressed raw data at full 16-bit 
+   resolution. One row per spectrum, NIR spectrum has up to 256 values 
+   (depending on binning and windowing), VIS has up to 512. Unit = counts.
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+/* CALIBRATED ITEMS AND ADDITIONAL METADATA */
+OBJECT        = COLUMN
+   NAME           = SPECTRUM_UTC_TIME
+   COLUMN_NUMBER  = 21
+   BYTES          = 17
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 1071
+   DESCRIPTION = "UTC time in YYDOYTHH:MM:SS.00 format translated from 
+   spacecraft time and packet subseconds (in integer seconds) that is 
+   transmitted to MESSENGER subsystems by the Integrated Electronics Module.
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = CORRECTED_COUNTS_SPECTRUM_DATA
+   COLUMN_NUMBER  = 22
+   BYTES          = 2048
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 1088
+   ITEMS          = 512
+   ITEM_BYTES     = 4
+   DESCRIPTION = "Derived column of corrected counts spectra. Counts 
+   corrected for darks, and other instrument level corrections (e.g. 
+   temperature, scattered light, etc. as determined by most current 
+   calibration.) One row per spectrum. NIR spectrum has up to 256 values 
+   (depending on binning and windowing), VIS has up to 512. Unit = corrected 
+   counts/second. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = CALIBRATED_RADIANCE_SPECTRUM_DATA
+   COLUMN_NUMBER    = 23
+   BYTES            = 2048
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3136
+   ITEMS            = 512
+   ITEM_BYTES       = 4
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived column of radiance-at-sensor spectra. One row per 
+   spectrum. NIR spectrum has up to 256 values (depending on binning and 
+   windowing), VIS has up to 512. Unit = W/(m^2 steradian micron). Radiance 
+   from saturated pixels, or binned pixels with one saturated element, are 
+   set to 1e32. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = NOISE_SPECTRUM_DATA
+   COLUMN_NUMBER    = 24
+   BYTES            = 2048
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 5184
+   ITEMS            = 512
+   ITEM_BYTES       = 4
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived column of noise/error propagated through 
+   calibration procedure. One row per spectrum. NIR spectrum has up to 256
+   values (depending on binning and windowing), VIS has up to 512. 
+   Unit = W/(m^2 steradian micron). Noise from saturated pixels, or binned 
+   pixels with one saturated element, are set to 1e32. PER SPECTRUM column." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = CALIBRATION_SOFTWARE_VERSION
+   COLUMN_NUMBER  = 25
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 7232
+   DESCRIPTION = "Indicates version of calibration software used. Increments 
+   with reprocessing of CDRs. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = CHANNEL_WAVELENGTHS
+   COLUMN_NUMBER  = 26
+   BYTES          = 2048
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 7236
+   ITEMS          = 512
+   ITEM_BYTES     = 4
+   DESCRIPTION = "Column of wavelengths paired to spectrum data channels. 
+   Unit = nanometers. OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = HK_DATA_FLAG
+   COLUMN_NUMBER  = 27
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9284
+   DESCRIPTION = "Null, or indicates HK data rate in inverse seconds. 
+  OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = DATA_QUALITY_INDEX
+   COLUMN_NUMBER  = 28
+   BYTES          = 19
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 9288
+   DESCRIPTION = "19 character index of data quality. Each digit signifies
+   quality factor of measurements. PER SPECTRUM column.
+   Format: ABCD-EFGH-IJKL-MNOP
+    A: Dark Scan Flag, denotes shutter commanded closed for dark observation.
+      0 = shutter not engaged
+      1 = shutter engaged
+    B: Temperature 1 Flag
+      0 = Temperature does not exceed 15 deg C threshold.
+      1 = Temperature exceeds 15 deg C threshold but less than 25 deg C 
+      threshold.
+      2 = Temperature exceeds 25 deg C threshold but less than 40 deg C 
+      threshold.
+      3 = Temperature exceeds 40 deg C threshold.
+    C: Temperature 2 Flag
+      0 = Temperature does not exceed 15 deg C threshold.
+      1 = Temperature exceeds 15 deg C threshold but less than 25 deg C 
+      threshold.
+      2 = Temperature exceeds 25 deg C threshold but less than 40 deg C 
+      threshold.
+      3 = Temperature exceeds 40 deg C threshold.
+    D: Grating Temperature Flag
+      0 = Temperature does not exceed 15 deg C threshold.
+      1 = Temperature exceeds 15 deg C threshold but less than 25 deg C 
+      threshold.
+      2 = Temperature exceeds 25 deg C threshold but less than 40 deg C 
+      threshold.
+      3 = Temperature exceeds 40 deg C threshold.
+    E: Anomalous Pixels
+      Integer 0-9 = Indicates number of hot pixels found.
+      Working Definition: The number of pixels with a noise spike (defined
+      in DQI L, below).
+      Procedure: The number of noise spike channels for spectra i. Repeat
+      for all N spectra.
+    F: Partial Data Flag
+      0 = No partial data.
+      1 = Partial data exists.
+      Working Definition: If any spectrum has nulls in the beginning or end,
+      signifying data drop outs.
+      Procedure: Given spectra i, evaluate first 10 channels and last 10
+      channels. If any channel has 0 value, set Partial Data Flag = 1.
+    G: Saturation Flag
+      0 = No pixels saturated.
+      1 = Saturated pixels exist.
+    H: Low Signal Level Flag
+      0 = Signal level not below -32768 threshold.
+      1 = Signal level below -32768 threshold.
+    I: Low VIS Wavelength Uncertainty Flag (not yet implemented, set to 0)
+      0 = Uncertainty not above TBD threshold at low wavelengths.
+      1 = Uncertainty above TBD threshold at low wavelengths.
+    J: High VIS Wavelength Uncertainty Flag (not yet implemented, set to 0)
+      0 = Uncertainty not above TBD threshold at high wavelengths.
+      1 = Uncertainty above TBD threshold at high wavelengths.
+    K: UVVS Operating Flag
+      0 = UVVS is not scanning during readout.
+      1 = UVVS is scanning during readout.
+    L: UVVS Noise Spike Flag
+      0 = No noise spike detected.
+      1 = Noise spike detected.
+      Using VIRS VIS (512 channel spectrum, N spectra per CDR) as an example,
+      Working Definition: A noise spike is a data value in 1 or 2 channels
+      that exceeds 3 standard deviations of the average for a given channel
+      in a given observation.
+      Procedure: Calculate the standard deviation for channel 1 through all
+      1-N spectra. If spectra i has stdev >=3, then spectra i has a noise
+      spike. Repeat calculation for channels 2-512. Keep track of the number
+      of 'noise spike channels' per spectra.
+    M: SPICE Version Epoch. Indicates what SPICE is used to determine pointing
+     fields in CDR. 'Predict' SPICE may change one or more times before 
+     settling on 'Final' pointing solutions about 2 weeks from data
+     acquisition.
+     0 = No SPICE
+     1 = Predict
+     2 = Actual
+    N: Dark Saturation Flag
+      Denotes that there are minimal unsaturated dark frames available for 
+      the polynomial fit of one or more pixels.
+      0 = All pixels in data record contain at least four unsaturated dark 
+      frames.
+      1 = One or more pixels in data record contain three or fewer 
+      unsaturated dark frames.
+    O-P: Spares"    
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = VIRS_GRATING_TEMP
+   COLUMN_NUMBER  = 29
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 9307 
+   DESCRIPTION = "Derived VIRS grating temperature from HK data in degrees 
+   Celsius. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+/*** SPICE DERIVED GEOMETRY VALUES ***/
+OBJECT        = COLUMN
+   NAME             = TARGET_LATITUDE_SET
+   COLUMN_NUMBER    = 30
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9311
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived latitude of footprint center, uprange edge (c1), 
+   downrange edge (c2), port, (c3) and starboard (c4) edges (5 total values, 
+   coordinates as in Figure 4 of VIRS_CDR_DDR_DAP_SIS.PDF; center point, c1, 
+   c2, c3, c4) on planet target corresponding to spectral observation. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LONGITUDE_SET
+   COLUMN_NUMBER    = 31
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9351
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived longitude of footprint center, uprange edge (c1), 
+   downrange edge (c2), port, (c3) and starboard (c4) edges (5 total values, 
+   coordinates as in Figure 4 of VIRS_CDR_DDR_DAP_SIS.PDF; center point, c1, 
+   c2, c3, c4) on planet target corresponding to spectral observation. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = ALONG_TRACK_FOOTPRINT_SIZE
+   COLUMN_NUMBER    = 32
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9391
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived length of VIRS footprint along track over the 
+   spectrum integration time, accounting for smear across surface. 
+   Unit = meters. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = ACROSS_TRACK_FOOTPRINT_SIZE
+   COLUMN_NUMBER    = 33
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9399
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived instantaneous width of VIRS footprint across track 
+   at the spectrum integration midpoint, accounting for jitter across 
+   surface. Unit = meters. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = FOOTPRINT_AZIMUTH
+   COLUMN_NUMBER    = 34
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9407
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived angle of footprint smear relative to a N-S line.
+   0 is North, plus/minus 180 is South, sign denotes east (clockwise) or 
+   west rotation of azimuth from North. Unit = degrees. 
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = INCIDENCE_ANGLE
+   COLUMN_NUMBER    = 35
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9415
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived solar incidence angle of footprint center. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = EMISSION_ANGLE
+   COLUMN_NUMBER    = 36
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9423
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived emission angle of footprint center. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PHASE_ANGLE
+   COLUMN_NUMBER    = 37
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9431
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived phase angle of footprint center. Unit = degrees. 
+   PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SLANT_RANGE_TO_CENTER
+   COLUMN_NUMBER    = 38
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9439
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived slant range from s/c to footprint center (equal to 
+   s/c NADIR_ALTITUDE in nadir pointing case). Unit = kilometers. PER 
+   SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSPACECRAFT_LATITUDE
+   COLUMN_NUMBER    = 39
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9447
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Derived subspacecraft latitude on planet surface. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSPACECRAFT_LONGITUDE
+   COLUMN_NUMBER    = 40
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9455
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Derived subspacecraft longitude on planet surface. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = NADIR_ALTITUDE
+   COLUMN_NUMBER    = 41
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9463
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Derived spacecraft altitude above nadir point. 
+   Unit = kilometers. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSOLAR_LATITUDE
+   COLUMN_NUMBER    = 42
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9471
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Derived subsolar latitude on planet surface. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSOLAR_LONGITUDE
+   COLUMN_NUMBER    = 43
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9479
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Derived subsolar longitude on planet surface. 
+   Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SOLAR_DISTANCE
+   COLUMN_NUMBER    = 44
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9487
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Derived subsolar distance to footprint center on planet 
+   surface. Unit = kilometers. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PLANET_TRUE_ANOMALY
+   COLUMN_NUMBER    = 45
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9495
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Derived true anomaly of planet. Unit = degrees. PER 
+   SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SPARE_1
+   COLUMN_NUMBER    = 46
+   BYTES            = 4
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9503
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = RIGHT_ASCENSION
+   COLUMN_NUMBER    = 47
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9507
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Right ascension. Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = DECLINATION
+   COLUMN_NUMBER    = 48
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 9515
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION = "Declination. Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+/* SPARE COLUMNS */
+OBJECT        = COLUMN
+   NAME           = SPARE_2
+   COLUMN_NUMBER  = 49
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9523
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_3
+   COLUMN_NUMBER  = 50
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9527
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_4
+   COLUMN_NUMBER  = 51
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9531
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_5
+   COLUMN_NUMBER  = 52
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9535
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_6
+   COLUMN_NUMBER  = 53
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9539
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_7
+   COLUMN_NUMBER  = 54
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9543
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_8
+   COLUMN_NUMBER  = 55
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9547
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_9
+   COLUMN_NUMBER  = 56
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9551
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_10
+   COLUMN_NUMBER  = 57
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9555
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_11
+   COLUMN_NUMBER  = 58
+   BYTES          = 4
+   DATA_TYPE      = MSB_INTEGER
+   START_BYTE     = 9559
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN

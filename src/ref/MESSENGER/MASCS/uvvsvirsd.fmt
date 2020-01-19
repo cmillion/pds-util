@@ -1,0 +1,423 @@
+OBJECT        = COLUMN
+   NAME             = UVVS_HDR_DDR_NAME
+   COLUMN_NUMBER    = 1
+   BYTES            = 31
+   DATA_TYPE        = CHARACTER
+   START_BYTE       = 1
+   DESCRIPTION      = "Name of the UVVS Surface DDR Header File from which
+   UVVS header data were extracted."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_SCI_DDR_NAME
+   COLUMN_NUMBER    = 2
+   BYTES            = 31
+   DATA_TYPE        = CHARACTER
+   START_BYTE       = 32
+   DESCRIPTION      = "Name of the UVVS Surface DDR Science File from which
+   UVVS science data were extracted."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_VIS_DDR_NAME
+   COLUMN_NUMBER    = 3
+   BYTES            = 27
+   DATA_TYPE        = CHARACTER
+   START_BYTE       = 63
+   DESCRIPTION      = "Name of the VIRS VIS DDR File from which VIRS VIS data 
+   were extracted."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_NIR_DDR_NAME
+   COLUMN_NUMBER    = 4
+   BYTES            = 27
+   DATA_TYPE        = CHARACTER
+   START_BYTE       = 90
+   DESCRIPTION      = "Name of the VIRS NIR DDR File from which VIRS NIR data 
+   were extracted."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = VIRS_SPECTRUM_NUMBER
+   COLUMN_NUMBER  = 5
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 117
+   DESCRIPTION    = "VIRS Spectrum Number."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_DRIFT
+   COLUMN_NUMBER    = 6
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 119
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "UVVS drift Distance from first to last step. Unit = km."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_SMEAR
+   COLUMN_NUMBER    = 7
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 127
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "UVVS smear as a percentage of footprint size."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LATITUDE_C0
+   COLUMN_NUMBER    = 8
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 135
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average latitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4). 
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LATITUDE_C1
+   COLUMN_NUMBER    = 9
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 503
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average latitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4). 
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LATITUDE_C2
+   COLUMN_NUMBER    = 10
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 871
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average latitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4). 
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LATITUDE_C3
+   COLUMN_NUMBER    = 11
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 1239
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average latitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4). 
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LATITUDE_C4
+   COLUMN_NUMBER    = 12
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 1607
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average latitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4). 
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LONGITUDE_C0  
+   COLUMN_NUMBER    = 13
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 1975
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average longitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4).  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LONGITUDE_C1  
+   COLUMN_NUMBER    = 14
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 2343
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average longitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4).  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LONGITUDE_C2  
+   COLUMN_NUMBER    = 15
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 2711
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average longitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4).  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LONGITUDE_C3  
+   COLUMN_NUMBER    = 16
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3079
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average longitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4).  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_TARGET_LONGITUDE_C4  
+   COLUMN_NUMBER    = 17
+   BYTES            = 368
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3447
+   ITEMS            = 46
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the UVVS BIN-average longitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4).  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_TARGET_LATITUDE_SET
+   COLUMN_NUMBER    = 18
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3815
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived latitude of VIRS footprint center, uprange edge 
+   (c1), downrange edge (c2), port, (c3) and starboard (c4) edges (5 total 
+   values, coordinates as in Figure 4 of VIRS_CDR_DDR_DAP_SIS.PDF; center 
+   point, c1, c2, c3, c4) on planet target corresponding to spectral 
+   observation. Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_TARGET_LONGITUDE_SET
+   COLUMN_NUMBER    = 19
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3855
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Derived longitude of VIRS footprint center, uprange edge 
+   (c1), downrange edge (c2), port, (c3) and starboard (c4) edges (5 total 
+   values, coordinates as in Figure 4 of VIRS_CDR_DDR_DAP_SIS.PDF; center 
+   point, c1, c2, c3, c4) on planet target corresponding to spectral 
+   observation. Unit = degrees. PER SPECTRUM column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_UVVS_CENTER_DISTANCE
+   COLUMN_NUMBER    = 20
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3895
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Distance from center coordinates of UVVS to center 
+   coordinates of VIRS. Unit = km."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_UVVS_OFFSET_PERCENTAGE
+   COLUMN_NUMBER    = 21
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3903
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Distance percentage of footprint size from center 
+   coordinates of UVVS to center coordinates of VIRS."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UVVS_CENTER_PHOT_ANGLES  
+   COLUMN_NUMBER    = 22
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3911
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Average incidence, emission and phase UVVS angles.  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_CENTER_PHOT_ANGLES  
+   COLUMN_NUMBER    = 23
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3935
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Average incidence, emission and phase VIRS angles.  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = VIRS_UVVS_MATCH
+   COLUMN_NUMBER    = 24
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3959
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "'Goodness of Match': (VIRS photometrically corrected
+   reflectance at 300 nm )/ (UVVS photometrically corrected reflectance at
+   300 nm) Where 1.00 is a perfect match."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = DATA_QUALITY_INDEX
+   COLUMN_NUMBER  = 25
+   BYTES          = 7
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 3967
+   DESCRIPTION = "7 character index of data quality. Each digit signifies
+   quality factor of measurements.
+   Format: ABCDEFG
+    A: Hot UVVS (threshold)
+      0 = Temperature does not exceed 50 deg C
+      1 = Temperature exceeds 50 deg C
+    B: Hot VIRS (threshold)
+      0 = Temperature does not exceed 35 deg C threshold.
+      1 = Temperature exceeds 35 deg C threshold.
+    C: AltVIRS
+      0 = UVVS and VIRS are near contemporaneous.
+      1 = UVVS and VIRS are not  contemporaneous. Best, closest  
+          overlapping VIRS observation matched with UVVS
+    D: Secondary AltVIRS (not closest, but best)
+      0 = Default
+      1 = UVVS and VIRS are not contemporaneous. Best overlapping  
+          VIRS observation matched with UVVS - but NOT geographically
+          closest.
+    E: VIRS Binning
+      0 = No VIRS binning (i.e. binned by 1)
+      1 = VIRS spectrum binned by 2, rebinned to full-size in DDR.
+    F: UVVS Footprint Heterogeneity
+      0 = No evaluation
+      1 = Footprint on uniform landscape
+      2 = Small craters or topography variation within UVVS footprint
+      3 = Large craters or topographic variation within UVVS footprint
+    G: Spare."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = FULLSPEC_WAVELENGTHS
+   COLUMN_NUMBER    = 26
+   BYTES            = 2160
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3974
+   ITEMS            = 540
+   ITEM_BYTES       = 4
+   DESCRIPTION = "Wavelength file of combined spectrum: 46 UVVS wavelengths, 
+   494 VIRS wavelengths."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = FULLSPEC_PHOTOM_IOF_DATA
+   COLUMN_NUMBER    = 27
+   BYTES            = 2160
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 6134
+   ITEMS            = 540
+   ITEM_BYTES       = 4
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Photometrically corrected reflectance values of combined 
+   spectrum: 46 UVVS wavelengths, 494 VIRS wavelengths."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = FULLSPEC_PHOTOM_IOF_NOISE_DATA
+   COLUMN_NUMBER    = 28
+   BYTES            = 2160
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 8294
+   ITEMS            = 540
+   ITEM_BYTES       = 4
+   INVALID_CONSTANT = 1.E32
+   DESCRIPTION = "Photometrically corrected reflectance noise of combined 
+   spectrum: 46 UVVS wavelengths, 494 VIRS wavelengths."
+END_OBJECT    = COLUMN
+
+/* SPARE COLUMNS */
+OBJECT        = COLUMN
+   NAME           = SPARE_1
+   COLUMN_NUMBER  = 29
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 10454
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_2
+   COLUMN_NUMBER  = 30
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 10462
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_3
+   COLUMN_NUMBER  = 31
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 10470
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_4
+   COLUMN_NUMBER  = 32
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 10478
+   DESCRIPTION = "SPARE column."
+END_OBJECT    = COLUMN
+

@@ -1,0 +1,339 @@
+OBJECT        = COLUMN
+   NAME             = BIN_NUMBER
+   COLUMN_NUMBER    = 1
+   BYTES            = 2
+   DATA_TYPE        = MSB_UNSIGNED_INTEGER
+   START_BYTE       = 1
+   DESCRIPTION    = "BIN of steps in the observation."
+END_OBJECT    = COLUMN
+
+/* SPICE DERIVED GEOMETRY VALUES */
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LATITUDE_SET
+   COLUMN_NUMBER    = 2
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 3
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the BIN-average latitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4). 
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LONGITUDE_SET  
+   COLUMN_NUMBER    = 3
+   BYTES            = 40
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 43
+   ITEMS            = 5
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "This indicates the BIN-average longitudes at the 
+   locations where the field-of-view center and corners intersect the planet 
+   surface. Format: (center, corner 1, corner 2, corner 3, corner 4).  
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+
+OBJECT        = COLUMN
+   NAME             = SLIT_ROTATION_ANGLE
+   COLUMN_NUMBER    = 4
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 83
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "BIN average angle of long dimension of the slit with the
+   surface tangent line. Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = ALONG_TRACK_FOOTPRINT_SIZE
+   COLUMN_NUMBER    = 5
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 91
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived BIN average length of UVVS footprints along
+   track, accounting for smear across surface. Unit = meters."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = ACROSS_TRACK_FOOTPRINT_SIZE
+   COLUMN_NUMBER    = 6
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 99
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION    = "Derived BIN width of UVVS footprints across track, 
+   accounting for jitter across surface. Unit = meters."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = INCIDENCE_ANGLE
+   COLUMN_NUMBER    = 7
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 107
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived BIN average solar incidence angle of footprint
+   center. Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = EMISSION_ANGLE
+   COLUMN_NUMBER    = 8
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 115
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived BIN average emission angle of footprint
+   center. Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PHASE_ANGLE
+   COLUMN_NUMBER    = 9
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 123
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived BIN average phase angle of footprint center. 
+   Unit = degrees."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SOLAR_DISTANCE
+   COLUMN_NUMBER    = 10
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 131
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived BIN average subsolar distance to footprint 
+   center on planet surface. Unit = kilometers."
+END_OBJECT    = COLUMN
+
+
+/* CALIBRATED ITEMS AND ADDITIONAL METADATA */
+
+OBJECT        = COLUMN
+   NAME           = MIDBIN_TIME
+   COLUMN_NUMBER  = 11
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 139
+   DESCRIPTION    = "A calculated value indicating the average mission 
+   elapsed time since launch of the BIN of steps. 
+   Unit = seconds. This is a double precision value. The formula used is:
+   MIDBIN_TIME = average(MIDSTEP_TIME for each step).
+   MIDSTEP_TIME values are taken from the source UVVS Science CDR steps
+   that were incorporated into the BIN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = BIN_UTC_TIME
+   COLUMN_NUMBER  = 12
+   BYTES          = 17
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 147
+   DESCRIPTION    = "UTC time in YYDOYTHH:MM:SS.00 format in the middle of
+   the BIN of steps."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = BIN_WAVELENGTH
+   COLUMN_NUMBER  = 13
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 164
+   DESCRIPTION    = "Center wavelength of BIN, Derived from average step 
+   wavelengths from wavelength equation. Unit = nanometers."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = IOF_BIN_DATA
+   COLUMN_NUMBER  = 14
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 168
+   DESCRIPTION    = "Derived column of BIN reflectance at sensor."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PHOTOM_IOF_BIN_DATA
+   COLUMN_NUMBER  = 15
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 172
+   DESCRIPTION    = "Derived column of BIN photometrically corrected
+   reflectance at sensor."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = IOF_BIN_NOISE_DATA
+   COLUMN_NUMBER  = 16
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 176
+   DESCRIPTION    = "Derived column of BIN reflectance noise/error propagated 
+   through post-calibration procedure.
+   PER BIN column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PHOTOM_IOF_BIN_NOISE_DATA
+   COLUMN_NUMBER  = 17
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 180
+   DESCRIPTION    = "Derived column of BIN photometrically corrected   
+   reflectance noise/error propagated through post-calibration procedure." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = FULLY_CORRECTED_COUNT_RATE
+   COLUMN_NUMBER  = 18
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 184
+   DESCRIPTION    = "Count rate of BIN. Unit = counts/second." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = BIN_RADIANCE_W
+   COLUMN_NUMBER  = 19
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 188
+   DESCRIPTION    = "BIN average calibrated radiance value
+   Unit = W/(m^2 steradian micron)." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PMT_TEMPERATURE
+   COLUMN_NUMBER  = 20
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 192
+   DESCRIPTION    = "BIN average PMT temperature in degrees C."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = DATA_QUALITY_INDEX
+   COLUMN_NUMBER  = 21
+   BYTES          = 21
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 196
+   DESCRIPTION    = "21 character index of data quality taken from the middle
+   of the BIN of steps. Each digit signifies quality factor of measurements.
+   Format: A-BCDEF-GHIJ-KLM-NOPQ
+   A: SBOS trip
+     0 = no trip
+     1 = trip
+     9 = Unknown. No information found from MASCS HK EDR for the time period 
+         START_TIME to STOP TIME.
+   B: Footprint center on planet
+     0 = not on planet
+     1 = on planet
+   C: Footprint C1 on planet
+     0 = not on planet
+     1 = on planet
+   D: Footprint C2 on planet
+     0 = not on planet
+     1 = on planet
+   E: Footprint C3 on planet
+     0 = not on planet
+     1 = on planet
+   F: Footprint C4 on planet
+     0 = not on planet
+     1 = on planet
+   G: Partial scan (macro cutoff)
+     0 = No partial scan.
+     1 = Partial scan.
+   H: Temperature 1 flag for this UVVS detector
+     0 = Temperature does not exceed 25 deg C threshold.
+     1 = Temperature exceeds 25 deg C threshold but less than 45 deg C 
+     threshold.
+     2 = Temperature exceeds 45 deg C threshold.
+     9 = Unknown. No information found from MASCS HK EDR for the time period 
+         START_TIME to STOP TIME.
+   I: UVVS noise spike flag
+     0 = No noise spike detected.
+     1 = Noise spike detected.
+   J: VIRS operating flag
+     0 = VIRS is not scanning during readout.
+     1 = VIRS is scanning during readout.
+     9 = Unknown. No information found from MASCS HK EDR for the time period 
+         START_TIME to STOP TIME.
+   K: Buffer overflow flag
+     0 = No buffer overflow.
+     1 = Buffer overflow.
+   L: Background subtraction method
+     # = Method used
+   M: Background quality flag (not yet implemented)
+     0 = Not yet implemented.
+     1 = Inside TBD threshold.
+   N: SPICE Version Epoch. Indicates what SPICE is used to determine pointing
+     fields in CDR. 'Predict' SPICE may change one or more times before 
+     settling on 'Final' pointing solutions about 2 weeks from data
+     acquisition.
+     0 = No SPICE
+     1 = Predict
+     2 = Actual
+   O: Footprint center stability. Fraction of FOV smear during the BIN 
+     observation. 0-9 = 0.0 to 0.9 FOVs movement while obtaining the steps 
+     that comprise the BIN. A= 1.0 FOVs, B=1.1, C=1.2, etc. each letter 
+     representing 0.1 FOV increments. Z=2.6 or greater FOV's smear.
+   P-Q: Spares"
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = OBSERVATION_TYPE
+   COLUMN_NUMBER  = 22
+   BYTES          = 30
+   DATA_TYPE      = CHARACTER
+   START_BYTE     = 217
+   DESCRIPTION    = "Describes the type of observation being executed in the
+   middle of the BIN of steps."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = BIN_SOLAR_IRRADIANCE_W
+   COLUMN_NUMBER  = 23
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 247
+   DESCRIPTION    = "BIN average solar irradiance at Mercury orbital 
+   distance. Unit = W/(m^2 steradian micron)." 
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE
+   COLUMN_NUMBER  = 24
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 251
+   DESCRIPTION    = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_2
+   COLUMN_NUMBER  = 25
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 255
+   DESCRIPTION    = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SPARE_3
+   COLUMN_NUMBER  = 26
+   BYTES          = 8
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 263
+   DESCRIPTION    = "SPARE column."
+END_OBJECT    = COLUMN

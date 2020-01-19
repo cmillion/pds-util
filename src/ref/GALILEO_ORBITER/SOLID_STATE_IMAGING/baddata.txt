@@ -1,0 +1,152 @@
+CCSD3ZF0000100000001NJPL3IF0PDS200000001 = SFDU_LABEL
+RECORD_TYPE                     = STREAM
+SPACECRAFT_NAME                 = "GALILEO ORBITER"
+OBJECT                          = TEXT
+NOTE                            = "BAD DATA VALUE HEADER DESCRIPTION"
+END_OBJECT
+END
+
+
+BAD DATA VALUE HEADER DESCRIPTION
+
+The following memorandum describes the format and content of the bad data
+value header of the Galileo SSI REDR and EDR images.
+
+
+
+JET PROPULSION LABORATORY                       INTEROFFICE MEMORANDUM
+                                                384-91-3:GMY
+                                                May 14, 1991
+
+To: Distribution
+From: Gary Yagi
+Subject: Tracking GLL SSI Bad-Data Values, Binary Label Design, Revision 2
+
+Revision summary:  Reed-Solomon overflow records are defined as a new bad
+  data type.  These are encoded as line segments (CODE=2) with RECORD-ID=7.
+
+References:
+  1) "Tracking GLL SSI Bad-Data Values, a Preliminary Design", G. Yagi,
+     April 3, 1989.
+  2) SSI Experiment Data Record, Galileo SIS 232-07.
+  3) "Galileo SSI UDR file format", Payam Zamani, 10 April 89.
+  4) "VICAR Run-Time Library Reference Manual", D. Stanfill, June 10, 88.
+
+This memo defines the format and contents of the binary labels used to
+store SSI bad-data values, as proposed in Reference 1.
+
+There are two parts to the binary label: the binary header, and the binary 
+prefix (see Ref. 4, Sec. 2.1.2).  The binary header precedes the image data
+(as do the ASCII labels) and contains information which pertain to the entire
+image.  The binary prefix precedes each image line and contains information
+specific to each line.  Binary labels are created by adding the U_NLB and 
+U_NBB keywords to the XVOPEN call.  Binary labels are accessed from a file
+already containing them by adding the CONDITION, BINARY keywords to the 
+XVOPEN call.  Note that since VICAR programs do not normally include these
+keywords in their XVOPEN calls, binary labels are usually ignored and  
+disappear when new versions of an image are created.  Binary labels were 
+originally designed to support the generation of Voyager EDRs.
+
+The binary header consists of an arbitrary number of records.  The first 
+record contains ancillary telemetry information and the image histogram  
+(Ref. 2).  The remaining binary header records contain bad-data information,
+stored as a sequence of "objects" in 16-bit integer format.  The following  
+types of objects have been defined:
+
+   OBJECT TYPE      CODE  FORMAT
+   ---------------  ----  --------------------------------------
+   Single pixels      1   line,sample
+   Line segments      2   line,starting-sample,number-of-samples
+   Column segments    3   sample,starting-line,number-of-lines
+
+These objects are used to encode the following bad-data types:
+
+   BAD-DATA TYPE          RECORD-ID     CREATED BY:
+   --------------------   ---------     -----------
+   Data drop-outs             3         GALSOS
+   Saturated pixels           4         GALSOS
+   Low-full-well pixels       5         GALSOS
+   Single-pixel spikes        6         ADESPIKE
+   Reed-Solomon overflow      7         GALSOS
+
+Single-pixel spikes are stored as single pixels, data drop-outs, saturated 
+pixels, and Reed-Solomon overflow records are stored as line segments, and
+low-full-well pixels as column segments.
+
+Note:  If a Reed-Solomon overflow occurs on a given line, it will cause
+the line to pass through the R-S decoder uncorrected.  For compressed image
+data, all pixels to the right of the first bit error will be corrupted.
+Since it is not possible to determine where this bit error occurs, the entire
+line is flagged as bad.
+
+Each record will be in 16-bit integer data format and will contain only one 
+type of object.  The first three integers of each record contain the record 
+ID, object code (CODE), and the number of objects in the record (N), respec-
+tively.  The remainder of the  record will contain a sequence of N objects.
+The maximum number of objects which can be stored on a record is a function
+of the EDR record length and object code.  Full-frame and summation-mode EDRs
+have record lengths of 1800 bytes and 1000 bytes, respectively:
+
+                FULL-FRAME        SUMMATION-MOD
+    CODE        MAX OBJECTS       MAX OBJECTS
+    ----        -----------       --------------
+      1             448                248
+      2             299                165
+      3             299                165
+
+If more objects of a certain type exist, they are written on subsequent
+records.  The records are not necessarily written in any particular order,
+although they must all precede the image line records.
+
+Example 1: Let a binary header record contain the sequence of integers 
+  6,1,3,211,104,322,111,401,233.  The record contains single-pixel spikes (6) 
+  encoded as single-pixels (1).  There are three objects encoded as line- 
+  sample coordinates: (211,104), (322,111), and (401,233).
+
+Example 2: Let a binary header record contain the sequence of integers
+  4,2,2,110,216,105,789,420,381.  The record contains saturated pixels (4)
+  encoded as line segments (2).  There are two objects.  The first line
+  segment is on line 110 and from sample 216 to 320.  The second line 
+  segment is on line 789 and from sample 420 to 800.
+
+Example 3: Let a binary header record contain the sequence of integers
+  5,3,2,299,710,91,521,72,729.  The record contains low-full-well pixels (5)
+  encoded as column segments (3).  There are two objects.  The first column
+  segment is on sample 299 and from lines 710 to 800.  The second column
+  segment is on sample 521 and from lines 72 to 800.
+
+The following is an example of a program which reads an image containing
+bad-data information, does something with this information, and outputs 
+an image which does not contain any binary labels (all subroutines other 
+than XV routines are fictitious):
+
+    COMMON/HDRREC/RECORDID,CODE,NOBJECTS,SPIX(2,448)    !Binary header record 
+    INTEGER*2 RECORDID,CODE,NOBJECTS,SPIX
+    INTEGER*2 BUF(900),LSEG(3,299),CSEG(3,299)
+    EQUIVALENCE (BUF,RECORDID),(SPIX,LSEG,CSEG)
+
+    COMMON/IMGREC/LHDR(100),PIXELS(800)               !Image line record
+    INTEGER*2 LHDR,PIXELS,LBUF(900)
+    EQUIVALENCE (LBUF,LHDR)
+
+    CALL XVUNIT(IUNIT,'INP',1,IND)
+    CALL XVOPEN(IUNIT,IND,'COND','BINARY')
+    CALL XVGET(IUNIT,IND,'NL',NL,'NS',NS,'NLB',NLB)
+
+    DO L=2,NLB  !Loop through the binary header records
+       CALL XVREAD(IUNIT,BUF,IND,'LINE',L)
+       IF (CODE.EQ.1) CALL SINGLE_PIXEL(SPIX,RECORDID,NOBJECTS)
+       IF (CODE.EQ.2) CALL LINE_SEGMENT(LSEG,RECORDID,NOBJECTS)
+       IF (CODE.EQ.3) CALL COLUMN_SEGMENT(CSEG,RECORDID,NOBJECTS)
+    ENDDO
+
+    CALL XVUNIT(OUNIT,'OUT',1,IND)
+    CALL XVOPEN(OUNIT,IND,'OP','WRITE')
+
+    DO L=1,NL       !Loop through each image line record
+       CALL XVREAD(IUNIT,LBUF,IND)    !Read a line record
+       CALL PROCESS_LINE(PIXELS,NS)   !Process the image line
+       CALL XVWRIT(OUNIT,PIXELS,IND)  !Write the image line
+    ENDDO
+
+

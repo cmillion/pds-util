@@ -1,0 +1,193 @@
+/*** ALL VALUES TAKEN DIRECTLY FROM UVVS HEADER CDR ***/
+
+OBJECT        = COLUMN
+   NAME           = SC_TIME
+   COLUMN_NUMBER  = 1
+   BYTES          = 4
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 1
+   DESCRIPTION    = "Spacecraft time in integer seconds that is transmitted
+   to the MESSENGER subsystems by the Integrated Electronics Module. This is
+   assigned as the start time of the UVVS observation. A UVVS observation is
+   defined as all the scan data contained within one UVVS science packet.
+   This is due to the highly configurable nature of the instrument, i.e. it
+   can be commanded to take multiple scans over multiple wavelengths. Unit is
+   in mission elapsed time which is the number of seconds since launch. PER 
+   OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PACKET_SUBSECONDS
+   COLUMN_NUMBER  = 2
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 5
+   DESCRIPTION    = "The subsecond time in milliseconds that the telemetry
+   packet was initiated. SC_TIME plus PACKET_SUBSECONDS is the spacecraft
+   time of the first integration. Values of this field are in units of 5
+   milliseconds. For example, a value of 10 refers to a time of 50 
+   milliseconds. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = START_POS
+   COLUMN_NUMBER  = 3
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 7
+   DESCRIPTION    = "Start position where grating drive begins a scan. 
+   Grating drive step position corresponds to a given wavelength being 
+   observed by an instrument. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_COUNT
+   COLUMN_NUMBER  = 4
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 9
+   DESCRIPTION    = "Number of steps the grating drive will take in a scan.
+   This directly corresponds to the range of wavelengths that will be 
+   observed in one UVVS observation. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = INT_TIME
+   COLUMN_NUMBER  = 5
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 11
+   DESCRIPTION    = "Integration time in grating drive loop control
+   interrupt periods (nominally 3000 Hz). For example, the actual 
+   integration time in seconds is INT_TIME/3000. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_TIME
+   COLUMN_NUMBER  = 6
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 13
+   DESCRIPTION    = "Step time in grating drive loop control interrupt
+   periods (nominally 3000 Hz). For example, the actual step time in 
+   seconds is STEP_TIME/3000. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = PHASE_OFFSET
+   COLUMN_NUMBER  = 7
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 15
+   DESCRIPTION    = "Phase offset in grating drive loop control interrupt 
+   periods. Phase offset between the beginning of grating drive step and 
+   the start of a PMT integration in units of 0.3 milliseconds. Default 
+   value is 0 (no phase offset).  By setting the phase offset to a 
+   non-zero value (reserved for contingency operations), the user will 
+   tell the software to initiate a step before the end of an integration, 
+   accounting for latencies in the motor controller. PER OBSERVATION 
+   column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SCAN_CYCLES
+   COLUMN_NUMBER  = 8
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 17
+   DESCRIPTION    = "Number of times to repeat scan. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = ZIGZAG
+   COLUMN_NUMBER  = 9
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 19
+   DESCRIPTION    = "Indicates whether grating drive moves in a 'triangle' 
+   (stepping up, then stepping down), or 'sawtooth' (stepping up, then 
+   'flying' down) motion. A 'triangle' observation takes one grating scan 
+   stepping up the grating, then reverses direction and takes the next 
+   grating scan stepping back down the grating. A 'sawtooth' observation 
+   takes one grating scan stepping up the grating, then 'flies' the grating 
+   back to the START_POSITION to take the next observation. =0 disable, 
+   =1 enable. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = COMPRESSION
+   COLUMN_NUMBER  = 10
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 21
+   DESCRIPTION    = "Selectable data size, =0 16 bit data, =1 9 bit data.
+   Used to help determine the total number of data points contained
+   in the observation. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = SLIT_MASK_POS
+   COLUMN_NUMBER  = 11
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 23
+   DESCRIPTION    = "Indicates whether slit mask is in atmospheric (open) 
+   or surface (closed) position. Atmospheric slit results in a 1 deg. by 
+   0.04 deg. instantaneous field of view (iFOV). Surface slit results in a 
+   0.05 deg. by 0.04 deg. iFOV. =0 closed, =1 open. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+
+OBJECT        = COLUMN
+   NAME           = GD_SETTLE_CTR
+   COLUMN_NUMBER  = 12
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 25
+   DESCRIPTION    = "Number of times during integration that the grating 
+   drive wandered outside target range. This can happen very rarely with an 
+   encoder misread, or motor misstep, and would result in an offset of 
+   step-number to wavelength correlations for subsequent observations in a 
+   given scan. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = NUM_SCAN_VALUES
+   COLUMN_NUMBER  = 13
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 27
+   DESCRIPTION    = "Total number of values or data points in the entire scan
+   observation. Used to determine the number of valid data points in the
+   SCAN_DATA column. Maximum value is 3626. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = STEP_SIZE
+   COLUMN_NUMBER  = 14
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 29
+   DESCRIPTION    = "Step size in arcmin units. PER OBSERVATION column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = COADD
+   COLUMN_NUMBER  = 15
+   BYTES          = 2
+   DATA_TYPE      = MSB_UNSIGNED_INTEGER
+   START_BYTE     = 31
+   DESCRIPTION    = "Number of steps coadded to make a single observation. 
+   Default = 1, i.e. one step per observation. PER OBSERVATION column."  
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME           = CALIBRATION_SOFTWARE_VERSION
+   COLUMN_NUMBER  = 16
+   BYTES          = 4
+   DATA_TYPE      = IEEE_REAL
+   START_BYTE     = 33
+   DESCRIPTION    = "Indicates version of calibration software used to 
+   generate UVVS Surface Reflectance Science DDR. Increments with
+   reprocessing of DDRs. PER OBSERVATION column."
+END_OBJECT    = COLUMN

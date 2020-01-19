@@ -1,0 +1,365 @@
+NOTE = "All 'PER SPECTRAL SCAN' geometry and time columns are defined at the
+midpoint (middle wavelength) of the observed spectral scan."
+
+OBJECT        = COLUMN
+   NAME             = OBSERVATION_TYPE
+   COLUMN_NUMBER    = 1
+   BYTES            = 30
+   DATA_TYPE        = CHARACTER
+   START_BYTE       = 1
+   DESCRIPTION      = "Name of the observation type. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = CDR_NAME
+   COLUMN_NUMBER    = 2
+   BYTES            = 27
+   DATA_TYPE        = CHARACTER
+   START_BYTE       = 31
+   DESCRIPTION      = "Name of the CDR from which the data were extracted.
+   PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = OBS_SEQUENCE_INDEX
+   COLUMN_NUMBER    = 3
+   BYTES            = 2
+   DATA_TYPE        = MSB_UNSIGNED_INTEGER
+   START_BYTE       = 58
+   DESCRIPTION      = "Counting index for a given observational sequence.
+   Sequences are arranged consecutively in time, so this index allows the
+   points within a given sequence to be identified. Resets to 1 with each 
+   new sequence. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+/* SPICE DERIVED GEOMETRY VALUES */
+
+OBJECT        = COLUMN
+   NAME             = PLANET_SUN_VECTOR_TG
+   COLUMN_NUMBER    = 4
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 60
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived (x,y,z) vector giving center-to-center 
+   planet-sun position in target body-fixed coordinate system at midpoint of 
+   scan. Unit = kilometers. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PLANET_SC_VECTOR_TG 
+   COLUMN_NUMBER    = 5
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 84
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived (x,y,z) vector giving center-to-center 
+   planet-spacecraft position in target body-fixed coordinate system at 
+   midpoint of scan. Unit = kilometers. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = BORESIGHT_UNIT_VECTOR_CENTER_TG
+   COLUMN_NUMBER    = 6
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 108
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived (x,y,z) vector giving look direction of MASCS 
+   UVVS center in target body-fixed coordinate system at midpoint of 
+   spectral scan. Unit = N/A. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LATITUDE
+   COLUMN_NUMBER    = 7
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 132
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Latitude below the tangent point of the UVVS 
+   field-of-view center. Measured at midpoint of spectral scan. 
+   Unit = degrees. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LONGITUDE  
+   COLUMN_NUMBER    = 8
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 140
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Longitude below the tangent point of the UVVS
+   field-of-view center. Measured at midpoint of spectral scan. 
+   Unit = degrees. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_ALTITUDE
+   COLUMN_NUMBER    = 9
+   BYTES            = 24
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 148
+   ITEMS            = 3
+   ITEM_BYTES       = 8
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Altitude (center, min, max) of the actual field-of-
+   view slit projection. Measured at midpoint of spectral scan. 
+   Unit = kilometers. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TARGET_LOCAL_TIME
+   COLUMN_NUMBER    = 10
+   BYTES            = 4
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 172
+   DESCRIPTION      = "Local time of the tangent point of the UVVS
+   field-of-view center. Local time is defined as 0 at midnight, 6 at dawn,
+   and 12 at noon. Measured at midpoint of spectral scan. Unit= hour plus 
+   fraction of hour. (e.g. 1.5 = 90 minutes). PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSPACECRAFT_LATITUDE
+   COLUMN_NUMBER    = 11
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 176
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived subspacecraft latitude on planet surface. 
+   Measured at the midpoint of spectral scan. Unit = degrees. PER SPECTRAL 
+   SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSPACECRAFT_LONGITUDE
+   COLUMN_NUMBER    = 12
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 184
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived subspacecraft longitude on planet surface. 
+   Measured at the midpoint of spectral scan. Unit = degrees. PER SPECTRAL 
+   SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SPACECRAFT_ALTITUDE
+   COLUMN_NUMBER    = 13
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 192
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived spacecraft altitude above nadir point.
+   Unit = kilometers. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SPACECRAFT_LOCAL_TIME
+   COLUMN_NUMBER    = 14
+   BYTES            = 4
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 200
+   DESCRIPTION      = "Local time of the subspacecraft point. Local time is 
+   defined as 0 at midnight, 6 at dawn, and 12 at noon. Measured at midpoint 
+   of spectral scan. Unit= hour plus fraction of hour. 
+   (e.g. 1.5 = 90 minutes). PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSOLAR_LATITUDE
+   COLUMN_NUMBER    = 15
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 204
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived subsolar latitude on planet surface.
+   Measured at midpoint of spectral scan. Unit = degrees. PER SPECTRAL 
+   SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SUBSOLAR_LONGITUDE
+   COLUMN_NUMBER    = 16
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 212
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived subsolar longitude on planet surface. 
+   Measured at midpoint of spectral scan. Unit = degrees. PER SPECTRAL 
+   SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = PLANET_TRUE_ANOMALY
+   COLUMN_NUMBER    = 17
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 220
+   MISSING_CONSTANT = -1.E32
+   DESCRIPTION      = "Derived true anomaly of planet. Measured at midpoint 
+   of spectral scan. Unit = degrees. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = ORBIT_NUMBER
+   COLUMN_NUMBER    = 18
+   BYTES            = 4
+   DATA_TYPE        = MSB_UNSIGNED_INTEGER
+   START_BYTE       = 228
+   DESCRIPTION      = "Mercury orbit number. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = MET_PARTITION
+   COLUMN_NUMBER    = 19
+   BYTES            = 4
+   DATA_TYPE        = MSB_UNSIGNED_INTEGER
+   START_BYTE       = 232
+   DESCRIPTION      = "Spacecraft clock partition number used in conjunction
+     with MET value to perform time conversion using SPICE kernels. 
+     Introduced due to the MET rollover on 2013-01-08 which reset the MET
+     value to 1000."
+END_OBJECT    = COLUMN
+
+/* CALIBRATED ITEMS AND ADDITIONAL METADATA */
+
+OBJECT        = COLUMN
+   NAME             = MID_SPECTRUM_TIME
+   COLUMN_NUMBER    = 20
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 236
+   DESCRIPTION      = "A calculated value indicating the mission elapsed
+   time since launch at the middle of an individual UVVS spectral scan. 
+   Unit = seconds. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = UTC_TIME
+   COLUMN_NUMBER    = 21
+   BYTES            = 17
+   DATA_TYPE        = CHARACTER
+   START_BYTE       = 244
+   DESCRIPTION      = "UTC time in YYDOYTHH:MM:SS.00 format derived from the 
+   MID_SPECTRUM_TIME using SPICE kernels. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = WAVELENGTH
+   COLUMN_NUMBER    = 22
+   BYTES            = 200
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 261
+   ITEMS            = 25
+   ITEM_BYTES       = 8
+   DESCRIPTION      = "Wavelength vector of the spectral scan, which can be 
+   up to 25 elements. Shorter scans are padded with zeros. PER SPECTRAL 
+   SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = RADIANCE_KR
+   COLUMN_NUMBER    = 23
+   BYTES            = 200
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 461
+   ITEMS            = 25
+   ITEM_BYTES       = 8
+   DESCRIPTION      = "Vector of calibrated radiances matched with scan 
+   WAVELENGTH; up to 25 elements. Shorter scans are padded with zeros. 
+   Unit = kiloRayleighs/nanometer. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = RADIANCE_SNR
+   COLUMN_NUMBER    = 24
+   BYTES            = 200
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 661
+   ITEMS            = 25
+   ITEM_BYTES       = 8
+   DESCRIPTION      = "Vector of calibrated radiance SNR matched with scan 
+   WAVELENGTH; up to 25 elements. Shorter scans are padded with zeros.
+   Derived signal-to-noise in fully calibrated radiance, propagated from
+   fully corrected count rate uncertainty and sensitivity uncertainty. 
+   Unitless fraction, applied to radiance. PER SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TOTAL_RADIANCE_KR
+   COLUMN_NUMBER    = 25
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 861
+   DESCRIPTION      = "Total radiance integrated over the specified emission 
+   line(s) in the given calibrated spectrum. Unit = kiloRayleighs. PER 
+   SPECTRAL SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = TOTAL_RADIANCE_SNR
+   COLUMN_NUMBER    = 26
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 869
+   DESCRIPTION      = "Derived SNR in the total radiance, propagated from
+   radiance SNR. Unitless fraction, applied to total radiance. PER SPECTRAL 
+   SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SLIT_POS
+   COLUMN_NUMBER    = 27
+   BYTES            = 2
+   DATA_TYPE        = MSB_UNSIGNED_INTEGER
+   START_BYTE       = 877
+   DESCRIPTION      = "Indicates whether slit mask is in atmospheric or 
+   surface position. Atmospheric slit results in a 1 deg. by 0.04 deg. 
+   instantaneous field of view (iFOV). Surface slit results in a 0.05 deg. 
+   by 0.04 deg. iFOV. Surface=0, Atmosphere=1.  Unitless, PER SPECTRAL 
+   SCAN."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SPARE_1
+   COLUMN_NUMBER    = 28
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 879
+   DESCRIPTION      = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SPARE_2
+   COLUMN_NUMBER    = 29
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 887
+   DESCRIPTION      = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SPARE_3
+   COLUMN_NUMBER    = 30
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 895
+   DESCRIPTION      = "SPARE column."
+END_OBJECT    = COLUMN
+
+OBJECT        = COLUMN
+   NAME             = SPARE_4
+   COLUMN_NUMBER    = 31
+   BYTES            = 8
+   DATA_TYPE        = IEEE_REAL
+   START_BYTE       = 903
+   DESCRIPTION      = "SPARE column."
+END_OBJECT    = COLUMN

@@ -185,6 +185,8 @@ def parse_attached_label(filename):
 def parse_label(filename, full=False):
     """ Wraps forking paths for attached and detached PDS3 labels.
     """
+    if filename.endswith('.fmt'):
+        return pvl.load(filename)
     if not has_attached_label(filename):
         if os.path.exists(filename[: filename.rfind(".")] + ".LBL"):
             label = pvl.load(filename[: filename.rfind(".")] + ".LBL")
@@ -223,22 +225,26 @@ def sample_types(SAMPLE_TYPE, SAMPLE_BYTES):
         "INTEGER": ">h",
         "MAC_INTEGER": ">h",
         "SUN_INTEGER": ">h",
-        "MSB_UNSIGNED_INTEGER": ">h" if SAMPLE_BYTES == 2 else ">B",
+        "MSB_UNSIGNED_INTEGER": f">u{SAMPLE_BYTES}",
         "UNSIGNED_INTEGER": ">B",
         "MAC_UNSIGNED_INTEGER": ">B",
         "SUN_UNSIGNED_INTEGER": ">B",
         "LSB_INTEGER": "<h" if SAMPLE_BYTES == 2 else "<B",
+        "MSB_INTEGER": f">i{SAMPLE_BYTES}",
         "PC_INTEGER": "<h",
         "VAX_INTEGER": "<h",
         "LSB_UNSIGNED_INTEGER": "<h" if SAMPLE_BYTES == 2 else "<B",
         "PC_UNSIGNED_INTEGER": "<B",
         "VAX_UNSIGNED_INTEGER": "<B",
-        "IEEE_REAL": ">f",
+        "IEEE_REAL": f">f{SAMPLE_BYTES}",
         "PC_REAL": "<f",
         "FLOAT": ">f",
         "REAL": ">f",
         "MAC_REAL": ">f",
         "SUN_REAL": ">f",
+        # Encoding CHARACTER as "V" (void) to avoid an error with unicode...
+        #   pandas seems to represent it correctly as a "b" string later...
+        "CHARACTER": f">V{SAMPLE_BYTES}", # this is wrong but avoids an error
     }[SAMPLE_TYPE]
 
 
@@ -366,23 +372,6 @@ def read_image_header(filename):  # ^IMAGE_HEADER
         return
 
 
-def read_telemetry_table(filename):  # ^TELEMETRY_TABLE
-    label = parse_label(filename)
-    with open(filename, "rb") as f:
-        f.seek(data_start_byte(label, "^TELEMETRY_TABLE"))
-        telemetry_table = f.read(
-            label["TELEMETRY_TABLE"]["ROWS"]
-            * label["TELEMETRY_TABLE"]["COLUMNS"]
-            * label["TELEMETRY_TABLE"]["ROW_BYTES"]
-        )
-    print(
-        "** TELEMETRY_TABLE not parsable without file: {STRUCTURE} ***".format(
-            STRUCTURE=label["TELEMETRY_TABLE"]["^STRUCTURE"]
-        )
-    )
-    return telemetry_table
-
-
 def read_bad_data_values_header(filename):  # ^BAD_DATA_VALUES_HEADER
     label = parse_label(filename)
     with open(filename, "rb") as f:
@@ -420,6 +409,28 @@ def parse_table_structure(filename, pointer="TABLE"):
     # Requires renaming some columns to maintain uniqueness.
     # Also requires unpacking columns that contain multiple entries.
     label = parse_label(filename)
+    if pointer=="TELEMETRY_TABLE":
+        if ((label["SPACECRAFT_NAME"] == "GALILEO ORBITER") and
+            (label["INSTRUMENT_NAME"] == "SOLID_STATE_IMAGING")):
+            label = {pointer:parse_label('ref/GALILEO_ORBITER/SOLID_STATE_IMAGING/rtlmtab.fmt')}
+    # If the COLUMN[s] are not defined in the header, then check
+    # for a pointer to a STRUCTURE file.
+    if not 'COLUMN' in label[pointer].keys(): # 
+        fmtpath = f'ref/{label["INSTRUMENT_HOST_NAME"]}/{label["INSTRUMENT_ID"]}'#{label[pointer]["^STRUCTURE"]}'
+        if not os.path.exists(fmtpath):
+            print(f'{fmtpath} does not exist')
+            raise
+        if os.path.exists(f'{fmtpath}/{label[pointer]["^STRUCTURE"]}'):
+            label = {pointer:parse_label(
+                f'{fmtpath}/{label[pointer]["^STRUCTURE"]}')}
+        elif os.path.exists(f'{fmtpath}/{label[pointer]["^STRUCTURE"].lower()}'):
+            # Because why would filename capitalization be consistent?!
+            label = {pointer:parse_label(
+                f'{fmtpath}/{label[pointer]["^STRUCTURE"].lower()}')}
+        else:
+            print(f'{label[pointer]["^STRUCTURE"]} does not exit')
+            raise
+
     dt = []
     for i in range(len(label[pointer].keys())):
         obj = label[pointer][i]
@@ -444,15 +455,13 @@ def parse_table_structure(filename, pointer="TABLE"):
 def read_table(filename, pointer="TABLE"):  # ^TABLE
     label = parse_label(filename)
     dt = parse_table_structure(filename, pointer)
-    return pd.DataFrame(
-        np.fromfile(
+    table = np.fromfile(
             filename,
             dtype=dt,
             offset=data_start_byte(label, f"^{pointer}"),
-            count=label[pointer]["ROWS"],
-        )
-    )
-
+            count=label[pointer]["ROWS"],)
+    # Pandas will choke on big-endian data, so it needs to be byteswapped
+    return pd.DataFrame(table.byteswap().newbyteorder())
 
 def read_engineering_table(filename):  # ^ENGINEERING_TABLE
     return read_table(filename, pointer="ENGINEERING_TABLE")
@@ -462,12 +471,19 @@ def read_measurement_table(filename):  # ^MEASUREMENT_TABLE
     return read_table(filename, pointer="MEASUREMENT_TABLE")
 
 
+def read_telemetry_table(filename):  # ^TELEMETRY_TABLE
+    return read_table(filename, pointer="TELEMETRY_TABLE")
+
+
 def read_spectrum(filename):  # ^SPECTRUM
     print("*** SPECTRUM data not yet supported. ***")
     return
 
 
 def read_jp2(filename):  # .JP2 extension
+    # NOTE: These are the huge HIRISE images. It might be best to just
+    #       leave thie capability to GDAL so that we don't have to bother
+    #       with memory management.
     print("*** JP2 filetype not yet supported. ***")
     return
 
